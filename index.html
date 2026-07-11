@@ -2,9 +2,8 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#090b12" />
-  <meta name="description" content="Project LIA — 단 하나의 동료와 세계의 끝을 향하는 AI 히로인 RPG" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#030504" />
   <title>Project LIA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,122 +11,52 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="Project LIA 홈">
-      <span class="brand-mark">L</span>
-      <span>PROJECT LIA</span>
-    </a>
-    <nav class="nav" aria-label="주요 메뉴">
-      <a href="#world">세계관</a>
-      <a href="#lia">리아</a>
-      <a href="#system">게임 시스템</a>
-    </nav>
-    <button class="nav-cta" type="button" data-scroll="#pre-register">사전등록</button>
-  </header>
-
-  <main id="top">
-    <section class="hero">
-      <div class="hero-glow hero-glow-a"></div>
-      <div class="hero-glow hero-glow-b"></div>
-
-      <div class="hero-copy reveal">
-        <p class="eyebrow">AI COMPANION ACTION RPG</p>
-        <h1>기억을 잃은 당신과,<br /><span>끝까지 남을 단 한 사람.</span></h1>
-        <p class="hero-description">
-          무너진 세계의 돔 바깥에서 눈을 뜬 당신.<br />
-          차갑고 낯선 헌터, 리아와 함께 잃어버린 진실을 추적하세요.
-        </p>
-        <div class="hero-actions">
-          <button class="primary-button" type="button" data-scroll="#pre-register">프로젝트 시작하기</button>
-          <button class="ghost-button" type="button" data-scroll="#world">세계관 보기</button>
-        </div>
-        <div class="hero-meta">
-          <span>RELATIONSHIP</span><i></i><span>STAGE BATTLE</span><i></i><span>AI DIALOGUE</span>
-        </div>
-      </div>
-
-      <div class="hero-visual reveal" aria-label="리아 캐릭터 콘셉트 실루엣">
-        <div class="character-halo"></div>
-        <div class="character-card">
-          <div class="character-tag">MAIN HEROINE</div>
-          <div class="character-name">LIA</div>
-          <div class="character-silhouette" aria-hidden="true">
-            <div class="hair"></div><div class="head"></div><div class="neck"></div><div class="body-shape"></div><div class="weapon"></div>
-          </div>
-          <div class="status-panel">
-            <div><span>신뢰도</span><strong>07</strong></div>
-            <div class="status-bar"><b style="width: 7%"></b></div>
-            <p>“당신을 믿는다고 한 적은 없어.”</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="scroll-cue" aria-hidden="true">SCROLL <span></span></div>
+  <main class="game" aria-live="polite">
+    <section class="title-screen" id="title-screen">
+      <div class="title-aura"></div>
+      <p class="title-kicker">AI COMPANION ACTION RPG</p>
+      <h1>PROJECT <span>LIA</span></h1>
+      <p class="loading-text">세계와의 연결을 복구하는 중</p>
+      <div class="loading-bar"><i></i></div>
     </section>
 
-    <section class="section world-section" id="world">
-      <div class="section-heading reveal">
-        <p class="eyebrow">THE LAST DOME</p>
-        <h2>인류의 90%가 숨어든 세계</h2>
-        <p>돔은 인류를 지키는 방패이자, 진실을 감춘 거대한 감옥이다.</p>
+    <section class="opening-screen" id="opening-screen" aria-hidden="true">
+      <div class="forest" id="forest" aria-hidden="true">
+        <div class="sky"></div>
+        <div class="sunlight light-one"></div>
+        <div class="sunlight light-two"></div>
+        <div class="mist mist-one"></div>
+        <div class="mist mist-two"></div>
+        <div class="tree tree-left"><i></i><b></b></div>
+        <div class="tree tree-mid"><i></i><b></b></div>
+        <div class="tree tree-right"><i></i><b></b></div>
+        <div class="canopy canopy-one"></div>
+        <div class="canopy canopy-two"></div>
+        <div class="canopy canopy-three"></div>
+        <div class="ground"></div>
+        <div class="leaf leaf-a"></div>
+        <div class="leaf leaf-b"></div>
+        <div class="leaf leaf-c"></div>
       </div>
-      <div class="world-grid">
-        <article class="feature-card reveal"><span class="feature-number">01</span><h3>붕괴한 외부 세계</h3><p>라군과 변이체가 점령한 폐허. 생존자는 돔의 허가 없이는 바깥으로 나갈 수 없다.</p></article>
-        <article class="feature-card reveal"><span class="feature-number">02</span><h3>기억을 잃은 플레이어</h3><p>당신의 과거는 지워졌다. 그러나 전투가 시작되는 순간, 설명할 수 없는 힘이 깨어난다.</p></article>
-        <article class="feature-card reveal"><span class="feature-number">03</span><h3>리아와의 싱크로</h3><p>리아의 선택과 감정은 전투 방식까지 바꾼다. 관계는 장식이 아니라 전력이다.</p></article>
-      </div>
-    </section>
 
-    <section class="section lia-section" id="lia">
-      <div class="lia-portrait reveal">
-        <div class="portrait-frame"><span class="portrait-code">LIA // UNIT 01</span><div class="portrait-core"></div></div>
-      </div>
-      <div class="lia-copy reveal">
-        <p class="eyebrow">YOUR ONLY PARTNER</p>
-        <h2>그녀는 처음부터<br />당신을 믿지 않는다.</h2>
-        <p>리아는 냉정하고 경계심이 강한 헌터다. 대화, 전투, 선택의 축적에 따라 말투와 행동, 전투 호흡이 천천히 달라진다.</p>
-        <blockquote>“살고 싶으면 따라와. 질문은 나중에 해.”</blockquote>
-        <div class="stat-list">
-          <div><span>호감도</span><strong>0 / 100</strong></div>
-          <div><span>신뢰도</span><strong>7 / 100</strong></div>
-          <div><span>친밀도</span><strong>0 / 100</strong></div>
-          <div><span>전투 호흡</span><strong>12 / 100</strong></div>
-        </div>
-      </div>
-    </section>
+      <div class="blackout" id="blackout"></div>
 
-    <section class="section system-section" id="system">
-      <div class="section-heading reveal">
-        <p class="eyebrow">CORE SYSTEM</p>
-        <h2>읽는 이야기가 아니라,<br />함께 살아가는 게임</h2>
+      <div class="narration" id="narration">
+        <p class="narration-line" data-delay="0">어디선가, 잎사귀가 서로 스치는 소리가 들려온다.</p>
+        <p class="narration-line" data-delay="1">울창한 숲 사이로 바람이 지나고, 푸른 향기가 천천히 번진다.</p>
+        <p class="narration-line" data-delay="2">눈꺼풀 너머로 따뜻한 햇살이 스며든다.</p>
+        <p class="narration-line emphasis" data-delay="3">나는, 서서히 눈을 떴다.</p>
       </div>
-      <div class="system-grid">
-        <article class="system-card reveal"><div class="system-icon">◇</div><h3>선택이 쌓이는 관계</h3><p>단 한 번의 정답보다, 오래 쌓인 태도가 리아의 마음을 바꾼다.</p></article>
-        <article class="system-card reveal"><div class="system-icon">⌁</div><h3>스테이지 전투</h3><p>플레이어는 후방에서 지휘하고, 리아와 전투 호흡을 맞춰 스킬을 연결한다.</p></article>
-        <article class="system-card reveal"><div class="system-icon">◉</div><h3>AI 대화</h3><p>고정된 선택지와 자유 대화를 함께 사용해, 플레이어마다 다른 리아를 만든다.</p></article>
-      </div>
-    </section>
 
-    <section class="pre-register" id="pre-register">
-      <div class="pre-register-inner reveal">
-        <p class="eyebrow">PROJECT LIA // FIRST CONTACT</p>
-        <h2>리아와의 첫 만남을 준비하세요.</h2>
-        <p>현재 첫 번째 플레이 가능한 프로토타입을 제작하고 있습니다.</p>
-        <form class="register-form" id="register-form">
-          <input type="email" id="email" placeholder="이메일 주소" aria-label="이메일 주소" required />
-          <button type="submit">업데이트 받기</button>
-        </form>
-        <p class="form-message" id="form-message" role="status"></p>
-      </div>
+      <section class="dialogue-box" id="dialogue-box" aria-hidden="true">
+        <div class="speaker">PLAYER</div>
+        <p class="dialogue-text" id="dialogue-text"></p>
+        <button class="next-button" id="next-button" type="button" aria-label="다음">⌄</button>
+      </section>
+
+      <button class="skip-button" id="skip-button" type="button">SKIP</button>
     </section>
   </main>
-
-  <footer>
-    <div class="brand"><span class="brand-mark">L</span><span>PROJECT LIA</span></div>
-    <p>© 2026 PROJECT LIA. Prototype in development.</p>
-  </footer>
 
   <script src="script.js"></script>
 </body>
