@@ -17,6 +17,8 @@ const lagoonStage=document.querySelector('#lagoon-stage');
 const wait=(ms)=>new Promise(resolve=>setTimeout(resolve,ms));
 let sequenceSkipped=false;
 let dialogueStep=0;
+let dialogueBusy=false;
+let narrationResolver=null;
 let playerName=localStorage.getItem('projectLiaPlayerName')||'';
 
 function setAria(element,visible){
@@ -24,11 +26,13 @@ function setAria(element,visible){
 }
 
 async function typeText(text,speed=75){
+  dialogueBusy=true;
   dialogueText.textContent='';
   for(const char of text){
     dialogueText.textContent+=char;
     await wait(speed);
   }
+  dialogueBusy=false;
 }
 
 function hideAllNarration(){
@@ -38,16 +42,30 @@ function hideAllNarration(){
   });
 }
 
-async function showNarration(index,duration=2800){
+function waitForNarrationTap(){
+  return new Promise(resolve=>{
+    narrationResolver=resolve;
+  });
+}
+
+function advanceNarration(){
+  if(!narrationResolver)return false;
+  const resolve=narrationResolver;
+  narrationResolver=null;
+  resolve();
+  return true;
+}
+
+async function showNarration(index){
   const card=narrationCards[index];
   if(!card)return;
   hideAllNarration();
   card.classList.remove('fade');
   await wait(80);
   card.classList.add('show');
-  await wait(duration);
+  await waitForNarrationTap();
   card.classList.add('fade');
-  await wait(750);
+  await wait(650);
 }
 
 function showDialogue(){
@@ -70,6 +88,7 @@ function showNamePanel(){
 
 function showOpeningCheckpoint(){
   sequenceSkipped=true;
+  advanceNarration();
   titleScreen.classList.add('hide');
   openingScreen.classList.add('active');
   setAria(openingScreen,true);
@@ -104,9 +123,9 @@ async function runOpening(){
 async function beginMemorySequence(){
   hideDialogue();
   blackout.classList.remove('open');
-  await wait(1000);
-  await showNarration(2,3000);
-  await showNarration(3,2600);
+  await wait(900);
+  await showNarration(2);
+  await showNarration(3);
   showNamePanel();
 }
 
@@ -115,8 +134,8 @@ async function beginWalkingSequence(){
   forest.classList.add('walking');
   await wait(700);
   blackout.classList.remove('open');
-  await wait(1200);
-  await showNarration(4,3200);
+  await wait(1000);
+  await showNarration(4);
   forest.classList.remove('walking');
   forest.classList.add('threat');
   blackout.classList.add('open');
@@ -129,8 +148,9 @@ async function beginWalkingSequence(){
   await typeText('뭐지... 저건?',85);
 }
 
-nextButton.addEventListener('click',async()=>{
-  nextButton.disabled=true;
+async function advanceDialogue(){
+  if(dialogueBusy)return;
+  dialogueBusy=true;
   try{
     if(dialogueStep===0){
       dialogueStep=1;
@@ -142,8 +162,23 @@ nextButton.addEventListener('click',async()=>{
       await beginWalkingSequence();
     }
   }finally{
-    nextButton.disabled=false;
+    dialogueBusy=false;
   }
+}
+
+openingScreen.addEventListener('click',event=>{
+  if(event.target.closest('#name-panel,#skip-button,#dialogue-box'))return;
+  advanceNarration();
+});
+
+dialogueBox.addEventListener('click',event=>{
+  event.stopPropagation();
+  advanceDialogue();
+});
+
+nextButton.addEventListener('click',event=>{
+  event.stopPropagation();
+  advanceDialogue();
 });
 
 nameForm.addEventListener('submit',async event=>{
@@ -165,9 +200,17 @@ nameForm.addEventListener('submit',async event=>{
   await typeText(`그래... 내 이름은 ${playerName}.`,80);
 });
 
-skipButton.addEventListener('click',showOpeningCheckpoint);
+skipButton.addEventListener('click',event=>{
+  event.stopPropagation();
+  showOpeningCheckpoint();
+});
+
 document.addEventListener('keydown',event=>{
   if(event.key==='Escape')showOpeningCheckpoint();
+  if((event.key==='Enter'||event.key===' ')&&narrationResolver){
+    event.preventDefault();
+    advanceNarration();
+  }
 });
 
 runOpening().catch(error=>{
