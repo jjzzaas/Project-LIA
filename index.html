@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=20260711-3" />
+  <link rel="stylesheet" href="style.css?v=20260711-4" />
 </head>
 <body>
   <main class="game" aria-live="polite">
@@ -22,46 +22,48 @@
 
     <section class="opening-screen" id="opening-screen" aria-hidden="true">
       <div class="forest" id="forest" aria-hidden="true">
-        <div class="sky"></div>
-        <div class="sunlight light-one"></div>
-        <div class="sunlight light-two"></div>
-        <div class="mist mist-one"></div>
-        <div class="mist mist-two"></div>
-        <div class="tree tree-left"><i></i><b></b></div>
-        <div class="tree tree-mid"><i></i><b></b></div>
-        <div class="tree tree-right"><i></i><b></b></div>
-        <div class="canopy canopy-one"></div>
-        <div class="canopy canopy-two"></div>
-        <div class="canopy canopy-three"></div>
-        <div class="ground"></div>
-        <div class="leaf leaf-a"></div>
-        <div class="leaf leaf-b"></div>
-        <div class="leaf leaf-c"></div>
+        <div class="sky"></div><div class="sunlight light-one"></div><div class="sunlight light-two"></div>
+        <div class="mist mist-one"></div><div class="mist mist-two"></div>
+        <div class="tree tree-left"><i></i><b></b></div><div class="tree tree-mid"><i></i><b></b></div><div class="tree tree-right"><i></i><b></b></div>
+        <div class="canopy canopy-one"></div><div class="canopy canopy-two"></div><div class="canopy canopy-three"></div>
+        <div class="ground"></div><div class="leaf leaf-a"></div><div class="leaf leaf-b"></div><div class="leaf leaf-c"></div>
       </div>
 
       <div class="blackout" id="blackout"></div>
 
       <div class="narration" id="narration">
-        <div class="narration-card" data-scene="0">
-          <p>어디선가 잎사귀가 서로 스치는 소리가 들려온다.</p>
-          <p>울창한 숲 사이로 바람이 지나고, 푸른 향기가 천천히 번진다.</p>
-        </div>
-        <div class="narration-card" data-scene="1">
-          <p>눈꺼풀 너머로 따뜻한 햇살이 스며든다.</p>
-          <p class="emphasis">나는, 서서히 눈을 떴다.</p>
-        </div>
+        <div class="narration-card" data-scene="0"><p>어디선가 잎사귀가 서로 스치는 소리가 들려온다.</p><p>울창한 숲 사이로 바람이 지나고, 푸른 향기가 천천히 번진다.</p></div>
+        <div class="narration-card" data-scene="1"><p>눈꺼풀 너머로 따뜻한 햇살이 스며든다.</p><p class="emphasis">나는, 서서히 눈을 떴다.</p></div>
+        <div class="narration-card" data-scene="2"><p>머릿속은 텅 비어 있었다.</p><p>어디에서 왔는지, 왜 이곳에 있는지조차 떠오르지 않았다.</p></div>
+        <div class="narration-card" data-scene="3"><p>그런데 이상하게도, 단 하나만은 남아 있었다.</p><p class="emphasis">내 이름.</p></div>
+        <div class="narration-card" data-scene="4"><p>그렇게 한참을 걸었을까.</p><p>바람의 흐름 사이로, 낯선 인기척이 스며들었다.</p></div>
       </div>
 
       <section class="dialogue-box" id="dialogue-box" aria-hidden="true">
-        <div class="speaker">PLAYER</div>
+        <div class="speaker" id="speaker">PLAYER</div>
         <p class="dialogue-text" id="dialogue-text"></p>
         <button class="next-button" id="next-button" type="button" aria-label="다음">⌄</button>
       </section>
+
+      <section class="name-panel" id="name-panel" aria-hidden="true">
+        <p class="name-prompt">내 이름은…</p>
+        <form id="name-form">
+          <input id="name-input" type="text" maxlength="12" autocomplete="off" placeholder="이름을 입력하세요" aria-label="플레이어 이름" required />
+          <button type="submit">기억해낸다</button>
+        </form>
+        <p class="name-error" id="name-error"></p>
+      </section>
+
+      <div class="lagoon-stage" id="lagoon-stage" aria-hidden="true">
+        <div class="lagoon-shadow"></div>
+        <div class="lagoon-body"><i></i><b></b><em></em></div>
+        <div class="danger-label">UNKNOWN ENTITY</div>
+      </div>
 
       <button class="skip-button" id="skip-button" type="button">SKIP</button>
     </section>
   </main>
 
-  <script src="script.js?v=20260711-3"></script>
+  <script src="script.js?v=20260711-4"></script>
 </body>
 </html>
