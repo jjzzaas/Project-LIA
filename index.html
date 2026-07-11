@@ -7,8 +7,8 @@
   <title>Project LIA</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=20260711-2" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css?v=20260711-3" />
 </head>
 <body>
   <main class="game" aria-live="polite">
@@ -42,10 +42,14 @@
       <div class="blackout" id="blackout"></div>
 
       <div class="narration" id="narration">
-        <p class="narration-line" data-delay="0">어디선가, 잎사귀가 서로 스치는 소리가 들려온다.</p>
-        <p class="narration-line" data-delay="1">울창한 숲 사이로 바람이 지나고, 푸른 향기가 천천히 번진다.</p>
-        <p class="narration-line" data-delay="2">눈꺼풀 너머로 따뜻한 햇살이 스며든다.</p>
-        <p class="narration-line emphasis" data-delay="3">나는, 서서히 눈을 떴다.</p>
+        <div class="narration-card" data-scene="0">
+          <p>어디선가 잎사귀가 서로 스치는 소리가 들려온다.</p>
+          <p>울창한 숲 사이로 바람이 지나고, 푸른 향기가 천천히 번진다.</p>
+        </div>
+        <div class="narration-card" data-scene="1">
+          <p>눈꺼풀 너머로 따뜻한 햇살이 스며든다.</p>
+          <p class="emphasis">나는, 서서히 눈을 떴다.</p>
+        </div>
       </div>
 
       <section class="dialogue-box" id="dialogue-box" aria-hidden="true">
@@ -58,6 +62,6 @@
     </section>
   </main>
 
-  <script src="script.js?v=20260711-2"></script>
+  <script src="script.js?v=20260711-3"></script>
 </body>
 </html>
