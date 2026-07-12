@@ -2,7 +2,6 @@
   const $=s=>document.querySelector(s);
   const mainLobby=$('#main-lobby');
   const association=$('.association-scene');
-  const associationBox=$('.association-dialogue');
   const associationSpeaker=$('#association-speaker');
   const associationText=$('#association-text');
   const lodging=$('.lobby-menu button:nth-child(4)');
@@ -51,6 +50,7 @@
   document.addEventListener('click',e=>{
     const button=e.target.closest('.farewell-choice button[data-choice]');
     if(!button)return;
+
     e.preventDefault();
     e.stopImmediatePropagation();
 
@@ -74,18 +74,19 @@
     farewellPending=true;
   },true);
 
-  if(associationBox){
-    associationBox.addEventListener('click',e=>{
-      if(!farewellPending)return;
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      farewellPending=false;
-      if(association)association.classList.remove('show');
-      transitionIndex=0;
-      transition.querySelector('p').textContent=transitionLines[0];
-      transition.classList.add('show');
-    },true);
-  }
+  document.addEventListener('click',e=>{
+    if(!farewellPending)return;
+    if(!e.target.closest('.association-dialogue'))return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    farewellPending=false;
+    if(association)association.classList.remove('show');
+    transitionIndex=0;
+    transition.querySelector('p').textContent=transitionLines[0];
+    transition.classList.add('show');
+  },true);
 
   transition.addEventListener('click',()=>{
     transitionIndex+=1;
