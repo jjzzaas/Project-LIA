@@ -50,5 +50,14 @@ window.CHAPTER_2=[
 {type:'guild',speaker:'하루',text:'……네. 그 정도라면 괜찮아요.'},
 {type:'guild',speaker:'하루',text:'길도 복잡하니까 제가 데려다드릴게요.'},
 {type:'mainLobby',speaker:'하루',text:'오늘은 많이 지치셨을 거예요.\n우선 숙소로 가서 쉬는 게 좋겠어요.',destination:'lodging'},
-{type:'black',text:'하루를 따라 임시 숙소로 향했다.'}
+{type:'black',text:'하루를 따라 임시 숙소로 향했다.'},
+{type:'lodging-front',text:'잠시 후, 우리는 조용한 골목 끝에 자리한 작은 건물 앞에 도착했다.\n화려하진 않았지만 늦은 시간 돌아온 헌터들이 잠시 몸을 누이기에는 충분해 보였다.'},
+{type:'lodging-front',speaker:'하루',text:'여기예요.\n오늘은 여기서 쉬시면 돼요.'},
+{type:'lodging-front',speaker:'하루',text:'그럼 저는 이만 가볼게요.\n오늘은 푹 쉬세요.'},
+{type:'relationshipChoice',speaker:'하루',text:'하루가 돌아서려 했다.',choices:[
+{text:'저기…… 내일도 볼 수 있을까요?',affinity:3,response:'……저를요?\n\n하루는 조금 뜻밖이라는 듯 나를 바라봤다.\n\n아마 길드에 오시면 볼 수 있을 거예요.\n그럼…… 내일 봬요.'},
+{text:'오늘 정말 감사했습니다. 이 신세는 꼭 갚겠습니다.',affinity:0,response:'괜찮아요. 너무 신경 쓰지 마세요.\n\n하루는 가볍게 고개를 저었다.\n\n그럼 푹 쉬세요.'},
+{text:'이제 됐습니다. 혼자 갈 수 있어요.',affinity:-2,response:'……네. 알겠어요.\n\n하루는 잠시 나를 바라보다가 짧게 고개를 끄덕였다.\n\n그럼 쉬세요.'}
+]},
+{type:'relationshipResponse',fallback:'그럼 푹 쉬세요.'}
 ];
