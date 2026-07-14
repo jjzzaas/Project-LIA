@@ -59,6 +59,16 @@ window.CHAPTER_3=[
   {type:'black',text:'F등급 헌터…….\n\n이 세계에서 처음으로 내게 생긴 신분이었다.'},
   {type:'guild',text:'안내원은 헌터 패와 함께 얇은 임무서를 내게 건넸다.'},
   {type:'guild',speaker:'안내원',text:'임무 내용은 이 안에 적혀 있어요.\n확인한 뒤 출발하시면 됩니다.'},
-  {type:'guild',speaker:'모모',text:'그럼 이제 갈 수 있는 거지?'},
-  {type:'city',text:'나는 헌터 패와 임무서를 챙겨 길드 밖으로 나섰다.\n모모도 가벼운 발걸음으로 뒤를 따라왔다.'}
+  {type:'guildExit',text:'헌터 패와 임무서를 챙겼다.\n이제 길드 밖으로 나가 내용을 확인하면 된다.'},
+  {type:'lobbyPause',speaker:'모모',text:'밖에서 의뢰서부터 확인해보자.'},
+  {type:'black',text:'나는 길드 앞에서 임무서를 펼쳤다.'},
+  {type:'black',text:'의뢰명 — 외곽 성벽 보수\n\n악몽의 습격으로 파손된 외벽 일부를 정비한다.\n위험도는 낮으며, 보수 자재는 현장에서 지급된다.'},
+  {type:'black',text:'전투 임무는 아니었다.\n숙박비를 갚기 위한 첫 일로는 충분해 보였다.'},
+  {type:'relationshipChoice',speaker:'모모',screenType:'city',affinityKey:'momoAffinity',text:'모모가 내 손에 들린 임무서를 힐끗 바라봤다.\n\n“나도 같이 가도 돼?”',choices:[
+    {text:'물론이죠. 같이 가요.',affinity:3,response:'정말? 좋아!\n\n모모의 얼굴이 금세 밝아졌다.'},
+    {text:'괜찮습니다. 함께 가시죠.',affinity:0,response:'응. 그럼 같이 가자.\n\n모모는 만족한 듯 고개를 끄덕였다.'},
+    {text:'따라오셔도 상관은 없습니다.',affinity:-2,response:'……응. 그래도 같이 갈게.\n\n모모는 잠깐 입술을 내밀었다가 내 옆으로 다가왔다.'}
+  ]},
+  {type:'relationshipResponse',speaker:'모모',screenType:'city',fallback:'그럼 같이 가자.'},
+  {type:'mainLobby',speaker:'모모',text:'외곽은 이쪽이야.\n새로 열린 타일을 누르면 돼.',destination:'exterior'}
 ];
