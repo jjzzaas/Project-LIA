@@ -1,5 +1,13 @@
 (()=>{
-  const originalVersion='1.9';
+  const originalVersion='2.0';
+
+  function topBar(){return `<header class="lobby-top"><div class="level-badge">Lv. ${state.level}</div><div class="stamina"><span>활력</span><b>${state.stamina} / ${state.maxStamina}</b></div><div class="credits"><span>크레딧</span><b>${state.credits.toLocaleString()}</b></div><button class="mission-btn" type="button">임무</button></header>`}
+
+  function openMission(scene){
+    const overlay=document.createElement('section');overlay.className='mission-overlay';
+    overlay.innerHTML=`<div class="mission-panel"><button class="mission-close">×</button><div class="mission-kicker">MAIN MISSION</div><h2>CHAPTER 3 · 낯선 동침자</h2><div class="mission-current"><small>현재 목표</small><strong>${scene.missionGoal||'외곽으로 이동하세요.'}</strong></div><div class="mission-progress"><span style="width:${scene.missionProgress||60}%"></span></div><div class="mission-reward"><small>챕터 클리어 보상</small><strong>10,000 크레딧</strong></div></div>`;
+    document.querySelector('.main-lobby').appendChild(overlay);overlay.querySelector('.mission-close').onclick=()=>overlay.remove();
+  }
 
   renderMainLobby=function(scene){
     const destination=scene.destination||'guild';
@@ -8,9 +16,10 @@
     const exteriorActive=destination==='exterior';
     const guide=guildActive?'빛나는 길드 타일을 선택하세요':lodgingActive?'새로 열린 숙소 타일을 선택하세요':'새로 열린 외곽 타일을 선택하세요';
 
-    mount(`<main class="screen main-lobby"><header class="lobby-top"><div class="level-badge">Lv. ${state.level}</div><div class="stamina"><span>활력도</span><div><i></i></div><b>100 / 100</b></div><button class="mission-btn">임무</button></header><section class="hero-zone"><div class="hero-placeholder">HEROINE</div><div class="speech"><strong>${scene.speaker||'하루'}</strong><p>${scene.text.replace(/\n/g,'<br>')}</p></div></section><nav class="tiles"><button class="tile guild-tile ${guildActive?'active-tile':''}" ${guildActive?'':'disabled'}><span>01</span><strong>길드</strong></button><button class="tile lodging-tile ${lodgingActive?'active-tile':''}" ${lodgingActive?'':'disabled'}><span>02</span><strong>숙소</strong></button><button class="tile exterior-tile ${exteriorActive?'active-tile':''}" ${exteriorActive?'':'disabled'}><span>03</span><strong>외곽</strong></button>${[4,5,6].map(n=>`<button class="tile" disabled><span>0${n}</span><strong>잠김</strong></button>`).join('')}</nav><div class="tile-guide">${guide}</div><div class="version">Ver. ${originalVersion}</div></main>`,()=>{
+    mount(`<main class="screen main-lobby">${topBar()}<section class="hero-zone"><div class="hero-placeholder">HEROINE</div><div class="speech"><strong>${scene.speaker||'하루'}</strong><p>${scene.text.replace(/\n/g,'<br>')}</p></div></section><nav class="tiles"><button class="tile guild-tile ${guildActive?'active-tile':''}" ${guildActive?'':'disabled'}><span>01</span><strong>길드</strong></button><button class="tile lodging-tile ${lodgingActive?'active-tile':''}" ${lodgingActive?'':'disabled'}><span>02</span><strong>숙소</strong></button><button class="tile exterior-tile ${exteriorActive?'active-tile':''}" ${exteriorActive?'':'disabled'}><span>03</span><strong>외곽</strong></button>${[4,5,6].map(n=>`<button class="tile" disabled><span>0${n}</span><strong>잠김</strong></button>`).join('')}</nav><div class="tile-guide">${guide}</div><div class="version">Ver. ${originalVersion}</div></main>`,()=>{
       const target=guildActive?document.querySelector('.guild-tile'):lodgingActive?document.querySelector('.lodging-tile'):document.querySelector('.exterior-tile');
       if(target)target.onclick=next;
+      document.querySelector('.mission-btn').onclick=()=>openMission(scene);
     });
   };
 })();
