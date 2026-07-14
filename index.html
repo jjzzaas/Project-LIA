@@ -6,37 +6,53 @@
 <meta name="theme-color" content="#020712" />
 <title>夢境 : 잠든 세계</title>
 <style>
-:root{font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;color:#eef7ff;background:#020712}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020712}body{overflow:hidden}.screen{position:relative;min-height:100dvh;display:flex;align-items:flex-end;justify-content:center;padding:7vh 6vw 11vh;isolation:isolate;background:radial-gradient(circle at 50% 25%,#163a56 0,#0a1727 36%,#02060d 100%)}.screen:before{content:'';position:absolute;inset:0;z-index:-2;background:linear-gradient(rgba(4,15,24,.08),rgba(0,0,0,.68))}.title{align-items:center;flex-direction:column;justify-content:center;text-align:center}.logo{font-family:serif;font-size:clamp(72px,18vw,180px);letter-spacing:.12em;text-shadow:0 0 18px #7ad7ff,0 0 60px #1f78aa}.subtitle{margin-top:12px;font-size:clamp(20px,5vw,34px);letter-spacing:.45em;color:#bde9ff}.start{margin-top:18vh;font-size:14px;letter-spacing:.15em;color:#dff6ff;animation:pulse 1.7s infinite}.version{position:absolute;left:18px;bottom:14px;font-size:12px;color:#80b7d0}.box{width:min(760px,100%);padding:22px 22px 26px;border:1px solid rgba(142,221,255,.3);border-radius:18px;background:rgba(3,13,24,.78);backdrop-filter:blur(12px);box-shadow:0 0 45px rgba(28,138,190,.16)}.speaker{font-weight:700;color:#8fe0ff;margin-bottom:10px}.text{font-size:clamp(17px,4.4vw,22px);line-height:1.85;word-break:keep-all}.black{align-items:center;background:#000}.black .box{background:transparent;border:0;box-shadow:none;text-align:center;font-family:serif;font-style:italic}.forest{background:radial-gradient(circle at 50% 12%,#5b8e8f 0,#1e4853 25%,#0b1a25 65%,#02060b 100%)}.battle{background:radial-gradient(circle at 55% 20%,#31576c 0,#111827 40%,#02040a 100%)}.status{align-items:center;background:radial-gradient(circle,#0d4c73 0,#06182a 38%,#01040a 75%)}.status .box{border-color:#68d3ff;box-shadow:0 0 30px #1485c8,inset 0 0 25px rgba(61,188,255,.15);text-align:center;color:#bcefff}.city{background:linear-gradient(#6fb4c8 0,#2f6076 24%,#12283a 58%,#050b13 100%)}.lobby{background:radial-gradient(circle at 50% 10%,#2a5777,#0a1726 45%,#02060c)}.choice{display:block;width:100%;margin-top:12px;padding:13px 15px;border:1px solid rgba(136,220,255,.38);border-radius:12px;background:rgba(8,33,51,.82);color:#eafbff}.hint{position:absolute;bottom:4.5vh;font-size:12px;color:#90b9cb;animation:pulse 1.7s infinite}@keyframes pulse{50%{opacity:.35}}
+:root{font-family:system-ui,-apple-system,'Noto Sans KR',sans-serif;color:#eef7ff;background:#020712}*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#020712}body{overflow:hidden}.screen{position:relative;min-height:100dvh;display:flex;align-items:flex-end;justify-content:center;padding:7vh 6vw 11vh;isolation:isolate;opacity:0;transform:scale(1.012);animation:enter .65s ease forwards;transition:opacity .42s ease,transform .42s ease,filter .42s ease}.screen.leaving{opacity:0;transform:scale(.995);filter:blur(3px)}.screen:before{content:'';position:absolute;inset:0;z-index:-2;background:linear-gradient(rgba(4,15,24,.08),rgba(0,0,0,.68))}.title{align-items:center;flex-direction:column;justify-content:center;text-align:center;background:radial-gradient(circle at 50% 25%,#163a56 0,#0a1727 36%,#02060d 100%)}.logo{font-family:serif;font-size:clamp(72px,18vw,180px);letter-spacing:.12em;text-shadow:0 0 18px #7ad7ff,0 0 60px #1f78aa}.subtitle{margin-top:12px;font-size:clamp(20px,5vw,34px);letter-spacing:.45em;color:#bde9ff}.start{margin-top:18vh;font-size:14px;letter-spacing:.15em;color:#dff6ff;animation:pulse 1.7s infinite}.version{position:absolute;left:18px;bottom:14px;font-size:12px;color:#80b7d0}.box{width:min(760px,100%);padding:22px 22px 26px;border:1px solid rgba(142,221,255,.3);border-radius:18px;background:rgba(3,13,24,.78);backdrop-filter:blur(12px);box-shadow:0 0 45px rgba(28,138,190,.16)}.speaker{font-weight:700;color:#8fe0ff;margin-bottom:10px}.text{font-size:clamp(17px,4.4vw,22px);line-height:1.85;word-break:keep-all}.black{align-items:center;background:#000}.black .box{background:transparent;border:0;box-shadow:none;text-align:center;font-family:serif;font-style:italic}.forest{background:radial-gradient(circle at 50% 12%,#5b8e8f 0,#1e4853 25%,#0b1a25 65%,#02060b 100%)}.battle{align-items:center;background:radial-gradient(circle at 55% 18%,#31576c 0,#111827 42%,#02040a 100%)}.status{align-items:center;background:radial-gradient(circle,#0d4c73 0,#06182a 38%,#01040a 75%)}.status .box{border-color:#68d3ff;box-shadow:0 0 30px #1485c8,inset 0 0 25px rgba(61,188,255,.15);text-align:center;color:#bcefff}.city{background:linear-gradient(#6fb4c8 0,#2f6076 24%,#12283a 58%,#050b13 100%)}.lobby{background:radial-gradient(circle at 50% 10%,#2a5777,#0a1726 45%,#02060c)}.choice{display:block;width:100%;margin-top:12px;padding:13px 15px;border:1px solid rgba(136,220,255,.38);border-radius:12px;background:rgba(8,33,51,.82);color:#eafbff}.hint{position:absolute;bottom:4.5vh;font-size:12px;color:#90b9cb;animation:pulse 1.7s infinite}.battle-wrap{width:min(860px,100%);display:grid;gap:16px}.enemy-card,.player-card{border:1px solid rgba(127,214,255,.28);border-radius:18px;padding:18px;background:rgba(2,9,18,.82);box-shadow:0 0 35px rgba(23,132,181,.12)}.enemy-name,.player-name{display:flex;justify-content:space-between;gap:12px;font-weight:700}.hp{height:10px;margin-top:10px;border-radius:999px;background:#152433;overflow:hidden}.hp span{display:block;height:100%;width:100%;background:linear-gradient(90deg,#72d6ff,#bcefff);transition:width .35s ease}.enemy-card .hp span{background:linear-gradient(90deg,#734a8c,#dc9cff)}.battle-log{min-height:48px;padding:10px 4px;color:#c9dce8;line-height:1.6}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.card-btn{min-height:96px;padding:12px 8px;border:1px solid rgba(117,213,255,.4);border-radius:14px;background:linear-gradient(180deg,rgba(17,66,92,.96),rgba(5,24,39,.96));color:#eafaff;box-shadow:inset 0 0 18px rgba(62,176,225,.08)}.card-btn strong{display:block;margin-bottom:7px}.card-btn small{color:#9dc5d8}.card-btn:disabled{opacity:.42}.hit{animation:hit .28s ease}.reward{font-size:13px;color:#9ee7ff;margin-top:8px}@keyframes enter{to{opacity:1;transform:scale(1)}}@keyframes hit{50%{transform:translateX(7px);filter:brightness(1.5)}}@keyframes pulse{50%{opacity:.35}}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
 const scenes=[
-['black','', '……여기는 어디지?'],['black','', '아니.\n그보다 먼저—'],['black','', '나는 누구지?'],
-['forest','', '눈을 뜨자, 푸른빛이 나뭇잎 사이로 흘러내렸다.\n흙과 바람, 젖은 나무 냄새까지 지나치게 선명했다.'],
-['forest','', '기억은 비어 있었다.\n그런데 몸은 이곳을 알고 있는 듯 자연스럽게 일어섰다.'],
-['forest','', '같은 나무를 두 번 지나친 것 같았다.\n처음부터 길 같은 건 없었던 걸까.'],
-['battle','', '나뭇가지가 부러졌다.\n검은 형체가 안개 사이에서 몸을 일으켰다.'],
-['battle','', '손을 뻗는 순간, 푸른 입자가 모여 검의 형태를 이루었다.\n생각할 틈도 없이 몸이 먼저 움직였다.'],
-['status','', 'LEVEL UP\nLv. 1 → Lv. 2\n정신 에너지 운용 상승\n신체 반응 상승\n새로운 구현 가능성 감지\n\n전리품: 악몽의 정수 × 1'],
-['forest','', '악몽은 검은 안개처럼 흩어졌다.\n그 자리에 푸른빛이 섞인 작은 결정 하나가 남았다.'],
-['forest','', '승리의 감각은 짧았다.\n더 짙고 거대한 그림자가 숲을 찢으며 나타났다.'],
-['battle','', '검이 튕겨 나갔다.\n차가운 발톱이 눈앞까지 다가온 순간— 푸른 섬광이 어둠을 갈랐다.'],
-['forest','하루','움직일 수 있어요?'],['forest','하루','……다친 곳은요?'],
-['forest','', '내민 손을 잡고 일어서는 순간 다리에 힘이 풀렸다.\n그녀가 반사적으로 나를 받아냈다. 머리카락이 뺨을 스치고 숨결이 가까워졌다.'],
-['forest','하루','……괜찮아 보이진 않네요.'],
-['forest','하루','혼자예요?', ['아마도.','기억이 없어.','당신은 누구지?']],
-['forest','하루','그럼 여기 혼자 있으면 안 돼요.\n중앙도시까지 같이 가요.'],
-['black','', '아무것도 기억하지 못한다.\n그런데 이상하게도, 그녀의 뒤를 따라가는 일만은 낯설지 않았다.'],
-['city','', '숲의 끝에서 빛이 터졌다.\n안개 너머, 처음 보는 중앙도시가 오래전부터 나를 기다린 듯 서 있었다.'],
-['city','하루','왜 그래요? 가요.\n혼자 두진 않을 테니까.'],
-['lobby','', '중앙도시 메인 로비가 해금되었습니다.\n튜토리얼 완료.']
+{type:'black',text:'……여긴 어디지?'},
+{type:'black',text:'아니.\n그보다 먼저—'},
+{type:'black',text:'나는 누구지?'},
+{type:'forest',text:'눈을 뜨자 푸른빛이 나뭇잎 사이로 흘러내렸다.\n흙냄새도, 바람도, 이상할 만큼 또렷했다.'},
+{type:'forest',text:'기억은 없었다.\n이름도, 얼굴도, 내가 여기까지 온 이유도.'},
+{type:'forest',text:'분명 처음 보는 숲인데.\n발은 망설임 없이 앞으로 나아갔다.'},
+{type:'forest',text:'또 같은 나무다.\n……아까도 여기 지나오지 않았나?'},
+{type:'forest',text:'그때, 가까운 곳에서 나뭇가지가 부러졌다.'},
+{type:'battleIntro',text:'검은 형체가 안개를 밀어내며 모습을 드러냈다.'},
+{type:'cardBattle'},
+{type:'status',text:'LEVEL UP\nLv. 1 → Lv. 2\n정신 에너지 운용 상승\n신체 반응 상승\n새로운 구현 가능성 감지\n\n전리품: 악몽의 정수 × 1'},
+{type:'forest',text:'악몽은 검은 안개처럼 흩어졌다.\n남은 건 손가락 마디만 한 푸른 결정 하나뿐이었다.'},
+{type:'forest',text:'숨을 돌릴 틈도 없었다.\n이번엔 더 크고, 더 짙은 그림자가 숲을 헤치며 다가왔다.'},
+{type:'forest',text:'검을 들었지만 손끝이 떨렸다.\n아까와는 달랐다. 본능이 먼저 도망치라고 외쳤다.'},
+{type:'forest',text:'검이 튕겨 나갔다.\n발톱이 눈앞까지 닿은 순간— 푸른 섬광이 어둠을 갈랐다.'},
+{type:'forest',speaker:'하루',text:'괜찮아요?'},
+{type:'forest',speaker:'하루',text:'잠깐만요. 일어설 수 있겠어요?'},
+{type:'forest',text:'그녀의 손을 잡고 몸을 일으키려다 다리에 힘이 풀렸다.\n휘청인 나를 그녀가 급히 받아냈다.'},
+{type:'forest',text:'머리카락이 뺨을 스쳤다.\n가까웠다. 생각보다 훨씬.'},
+{type:'forest',speaker:'하루',text:'……이 정도면 안 괜찮은 건데.'},
+{type:'forest',speaker:'하루',text:'혼자예요?',choices:['아마도.','기억이 안 나.','당신은 누구야?']},
+{type:'forest',speaker:'하루',text:'기억이 안 난다고요?'},
+{type:'forest',speaker:'하루',text:'하아…… 일단 여기서 나가요.\n이 숲은 혼자 돌아다닐 곳이 아니에요.'},
+{type:'black',text:'이름도 모르는 사람을 따라가도 되는 걸까.\n그런데 이상하게, 그녀의 뒤를 걷는 동안만큼은 두렵지 않았다.'},
+{type:'city',text:'숲이 끝나는 곳에서 빛이 터졌다.\n안개 너머로 거대한 중앙도시가 모습을 드러냈다.'},
+{type:'city',speaker:'하루',text:'처음 봐요?'},
+{type:'city',speaker:'하루',text:'그 표정이면 맞네.\n가요. 들어가서 천천히 얘기해요.'},
+{type:'lobby',text:'중앙도시 메인 로비가 해금되었습니다.\n튜토리얼 완료.'}
 ];
-const app=document.getElementById('app');let i=-1;let lock=false;
-function title(){app.innerHTML='<main class="screen title"><div class="logo">夢境</div><div class="subtitle">잠든 세계</div><div class="start">화면을 터치하여 시작</div><div class="version">Ver. 0.2</div></main>';app.firstElementChild.addEventListener('click',next,{once:true});}
-function render(){const s=scenes[i],choices=s[3]||[];app.innerHTML=`<main class="screen ${s[0]}"><section class="box">${s[1]?`<div class="speaker">${s[1]}</div>`:''}<div class="text">${s[2].replace(/\n/g,'<br>')}</div>${choices.map(c=>`<button class="choice">${c}</button>`).join('')}</section><div class="hint">터치하여 계속</div><div class="version">Ver. 0.2</div></main>`;const main=app.firstElementChild;if(choices.length){main.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();next()}));}else{main.addEventListener('click',next);}}
-function next(){if(lock)return;lock=true;setTimeout(()=>lock=false,180);i++;if(i>=scenes.length){i=scenes.length-1;return;}render();}
+const app=document.getElementById('app');let i=-1;let locked=false;
+function mount(html,onReady){const old=app.firstElementChild;if(old){old.classList.add('leaving');setTimeout(()=>{app.innerHTML=html;onReady&&onReady();},420);}else{app.innerHTML=html;onReady&&onReady();}}
+function title(){mount('<main class="screen title"><div class="logo">夢境</div><div class="subtitle">잠든 세계</div><div class="start">화면을 터치하여 시작</div><div class="version">Ver. 0.3</div></main>',()=>app.firstElementChild.addEventListener('click',next,{once:true}));}
+function renderScene(s){const choices=s.choices||[];mount(`<main class="screen ${s.type}"><section class="box">${s.speaker?`<div class="speaker">${s.speaker}</div>`:''}<div class="text">${s.text.replace(/\n/g,'<br>')}</div>${choices.map(c=>`<button class="choice">${c}</button>`).join('')}</section><div class="hint">터치하여 계속</div><div class="version">Ver. 0.3</div></main>`,()=>{const main=app.firstElementChild;if(choices.length){main.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();next()}));}else{main.addEventListener('click',next);}});}
+function renderBattle(){let enemy=30,player=42,guard=0,turn=1;mount(`<main class="screen battle"><div class="battle-wrap"><div class="enemy-card" id="enemy"><div class="enemy-name"><span>숲의 악몽</span><span id="enemyHpText">30 / 30</span></div><div class="hp"><span id="enemyHp"></span></div></div><div class="battle-log" id="log">카드를 골라 행동하세요.</div><div class="player-card" id="player"><div class="player-name"><span>이름 없는 여행자</span><span id="playerHpText">42 / 42</span></div><div class="hp"><span id="playerHp"></span></div><div class="cards"><button class="card-btn" data-card="slash"><strong>베기</strong><small>피해 12</small></button><button class="card-btn" data-card="focus"><strong>집중</strong><small>다음 공격 강화</small></button><button class="card-btn" data-card="guard"><strong>방어</strong><small>피해 감소</small></button></div></div><div class="version">Ver. 0.3</div></div></main>`,()=>{
+let focused=false;const log=document.getElementById('log'),eh=document.getElementById('enemyHp'),ph=document.getElementById('playerHp'),eht=document.getElementById('enemyHpText'),pht=document.getElementById('playerHpText');
+function sync(){eh.style.width=(enemy/30*100)+'%';ph.style.width=(player/42*100)+'%';eht.textContent=Math.max(0,enemy)+' / 30';pht.textContent=Math.max(0,player)+' / 42';}
+function disable(v){document.querySelectorAll('.card-btn').forEach(b=>b.disabled=v)}
+function enemyTurn(){if(enemy<=0)return;setTimeout(()=>{let dmg=guard?4:9;guard=0;player-=dmg;document.getElementById('player').classList.add('hit');setTimeout(()=>document.getElementById('player').classList.remove('hit'),280);log.textContent=`악몽의 공격. ${dmg}의 피해를 입었다.`;sync();turn++;disable(false);},520);}
+document.querySelectorAll('.card-btn').forEach(btn=>btn.addEventListener('click',()=>{disable(true);const card=btn.dataset.card;if(card==='slash'){const dmg=focused?20:12;focused=false;enemy-=dmg;document.getElementById('enemy').classList.add('hit');setTimeout(()=>document.getElementById('enemy').classList.remove('hit'),280);log.textContent=`검을 휘둘렀다. ${dmg}의 피해.`;}else if(card==='focus'){focused=true;log.textContent='숨을 고르고 정신을 집중했다. 다음 베기가 강해진다.';}else{guard=1;log.textContent='검을 세워 공격에 대비했다.';}sync();if(enemy<=0){log.innerHTML='악몽이 무너졌다.<div class="reward">전투 승리 — 화면을 터치하여 계속</div>';document.querySelector('.battle').addEventListener('click',next,{once:true});}else enemyTurn();}));sync();});}
+function next(){if(locked)return;locked=true;setTimeout(()=>locked=false,480);i++;if(i>=scenes.length){i=scenes.length-1;return;}const s=scenes[i];if(s.type==='cardBattle')renderBattle();else if(s.type==='battleIntro')renderScene({type:'battle',text:s.text});else renderScene(s);}
 title();
 </script>
 </body>
