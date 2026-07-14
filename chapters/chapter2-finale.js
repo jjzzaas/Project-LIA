@@ -10,5 +10,6 @@ window.CHAPTER_2.push(
   {type:'lodging',text:'당장 답을 찾을 수 있는 건 아무것도 없었다.\n나는 천천히 침대에 몸을 눕혔다.'},
   {type:'sleep',text:'오늘은 자자.\n\n내일부터는 우선 내가 처한 상황부터 제대로 알아봐야 한다.\n\n그리고 이곳에서 살아가기 위해—\n\n내가 할 수 있는 일이 무엇인지 찾아보자.'},
   {type:'sleep',text:'낯선 천장이 점점 흐려졌다.\n나는 천천히 눈을 감았다.'},
-  {type:'chapter',clear:true,chapter:2,title:'기록되지 않은 사람'}
+  {type:'chapter',clear:true,chapter:2,title:'기록되지 않은 사람'},
+  {type:'levelup',from:3,to:4}
 );
