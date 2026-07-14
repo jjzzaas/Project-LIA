@@ -42,5 +42,15 @@ window.CHAPTER_3=[
   {type:'guild',speaker:'길드장',text:'할 수 있는 일이라…….'},
   {type:'guild',text:'길드장은 잠시 생각하더니 귀찮다는 듯 머리를 긁었다.'},
   {type:'guild',speaker:'길드장',text:'마침 아무도 맡으려 하지 않는 귀찮은 일이 하나 있지.\n그거라도 해.'},
-  {type:'guild',speaker:state=>state.playerName,text:'알겠습니다.'}
+  {type:'guild',speaker:state=>state.playerName,text:'알겠습니다.'},
+  {type:'guild',speaker:'안내원',text:'잠시만요.\n잔심부름이라고 해도 엄연히 길드의 정식 임무예요.'},
+  {type:'guild',speaker:'안내원',text:'임무를 수락하시려면 먼저 헌터로 등록하셔야 해요.'},
+  {type:'guild',speaker:state=>state.playerName,text:'헌터 등록이요?'},
+  {type:'guild',speaker:'안내원',text:'네. 처음 등록하시는 분은 모두 F등급부터 시작해요.\n간단한 등록 절차만 마치시면 됩니다.'},
+  {type:'guild',text:'안내원의 설명에 따라 나는 헌터 등록 절차를 밟았다.\n이름과 기본 정보를 확인하고, 길드의 규칙에 동의했다.'},
+  {type:'guild',speaker:'안내원',text:'등록이 완료됐습니다.\n이제부터 정식 F등급 헌터예요.'},
+  {type:'black',text:'F등급 헌터…….\n이 세계에서 처음으로 내게 생긴 신분이었다.'},
+  {type:'guild',speaker:'길드장',text:'됐으면 얼른 다녀와.\n일은 밖에 나가면서 설명해 줄 테니까.'},
+  {type:'guild',speaker:'모모',text:'가자!'},
+  {type:'city',text:'나는 새로 등록된 F등급 헌터의 자격으로 길드 문을 나섰다.\n모모도 자연스럽게 내 옆을 따라 나왔다.'}
 ];
