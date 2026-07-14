@@ -1,0 +1,1 @@
+.active-tile{opacity:1!important;border-color:#f0c982!important;box-shadow:0 0 0 2px rgba(240,201,130,.12),0 0 30px rgba(225,171,76,.48)!important;animation:lodgingGlow 1.5s ease-in-out infinite}.active-tile span{color:#d6b56f}.active-tile strong{color:#fff4d7}@keyframes lodgingGlow{50%{box-shadow:0 0 0 3px rgba(240,201,130,.08),0 0 42px rgba(225,171,76,.7)}}
