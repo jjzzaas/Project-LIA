@@ -3,6 +3,9 @@
   if(!app)return;
 
   function apply(){
+    document.querySelectorAll('.version,.battle-version').forEach(el=>{
+      if(el.textContent!=='Ver. 1.2')el.textContent='Ver. 1.2';
+    });
     const title=document.querySelector('.chapter-title');
     if(title?.textContent?.trim()==='CHAPTER 1'&&!title.parentElement?.querySelector('.chapter-sub')){
       const sub=document.createElement('div');
