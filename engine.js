@@ -1,17 +1,377 @@
-const app=document.getElementById('app');
-const VERSION='2.2';
-const state={playerName:localStorage.getItem('mongyeong.playerName')||'여행자',level:Number(localStorage.getItem('mongyeong.level')||1),exp:Number(localStorage.getItem('mongyeong.exp')||0),chapter:1,stamina:200,maxStamina:200,credits:Number(localStorage.getItem('mongyeong.credits')||0)};
-let scenes=window.CHAPTER_1||[];let index=-1;let locked=false;
-function save(){localStorage.setItem('mongyeong.playerName',state.playerName);localStorage.setItem('mongyeong.level',String(state.level));localStorage.setItem('mongyeong.exp',String(state.exp));localStorage.setItem('mongyeong.credits',String(state.credits));}
-function mount(html,onReady){const old=app.firstElementChild;if(old){old.classList.add('leaving');setTimeout(()=>{app.innerHTML=html;onReady?.()},420)}else{app.innerHTML=html;onReady?.()}}
-function title(){mount(`<main class="screen title"><div class="logo">夢境</div><div class="subtitle">잠든 세계</div><div class="start">화면을 터치하여 시작</div><div class="version">Ver. ${VERSION}</div></main>`,()=>app.firstElementChild.addEventListener('click',next,{once:true}))}
-function renderName(){mount(`<main class="screen black"><div class="name-wrap"><div class="text">내 이름은—</div><input id="name" class="name-input" maxlength="10" placeholder="이름을 입력하세요" value="${state.playerName==='여행자'?'':state.playerName}"><button id="confirm" class="confirm">확인</button></div><div class="version">Ver. ${VERSION}</div></main>`,()=>{const input=document.getElementById('name');input.focus();const go=()=>{const value=input.value.trim();if(!value)return;state.playerName=value;save();next()};document.getElementById('confirm').onclick=go;input.addEventListener('keydown',event=>{if(event.key==='Enter')go()})})}
-function levelTheme(level){if(level<=25)return'level-blue';if(level<=50)return'level-noise';if(level<=75)return'level-red-noise';return'level-fracture'}
-function renderLevelUp(scene){const from=state.level;state.exp=100;save();mount(`<main class="screen status ${levelTheme(from+1)}"><section class="box"><div class="chapter-title">EXP MAX</div><div class="exp-track"><span style="width:100%"></span></div><div class="text" style="margin-top:18px">남은 경험치가 채워졌습니다.</div></section><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`,()=>app.firstElementChild.onclick=()=>{state.level=from+1;state.exp=0;save();mount(`<main class="screen status ${levelTheme(state.level)}"><section class="box"><div class="chapter-title">LEVEL UP</div><div class="text" style="margin-top:18px">Lv. ${from} → Lv. ${state.level}</div></section><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`,()=>app.firstElementChild.onclick=next)}})}
-function renderBattleIntro(){mount(`<main class="screen battle-intro"><div class="battle-start-flash">BATTLE START</div><div class="battle-start-sub">적과 조우했습니다</div><div class="version">Ver. ${VERSION}</div></main>`,()=>setTimeout(renderBattle,1200))}
-function renderBattle(){let enemy=90,player=42,haru=48,phase='player',haruSpecialUsed=false,guard=0,focused=false;mount(`<main class="screen battle-screen"><div class="battle-controls"><button class="control-btn locked">🔒 ×1</button><button class="control-btn locked">🔒 AUTO</button></div><div class="battle-layout"><section class="battle-top"><div class="unit-head"><span>정체불명의 생명체</span><span id="enemyText">90 / 90</span></div><div class="hp enemy-hp"><span id="enemyHp"></span></div></section><section class="battle-middle"><div class="turn-label" id="turnLabel">아군 1 · ${state.playerName}</div><div class="battle-line" id="battleLine">${state.playerName}의 차례입니다.</div></section><section class="allies"><div class="ally-panel" id="playerPanel"><div class="unit-head"><span>${state.playerName}</span><span id="playerText">42 / 42</span></div><div class="hp"><span id="playerHp"></span></div><div class="cards"><button class="card-btn player-card" data-card="strike"><strong>공격</strong><small>피해 10</small></button><button class="card-btn player-card" data-card="guard"><strong>방어</strong><small>피해 감소</small></button><button class="card-btn player-card" data-card="wait"><strong>틈 보기</strong><small>다음 공격 강화</small></button></div></div><div class="ally-panel" id="haruPanel"><div class="unit-head"><span>하루</span><span id="haruText">48 / 48</span></div><div class="hp"><span id="haruHp"></span></div><div class="cards"><button class="card-btn haru-card" data-card="arrow"><strong>빛의 화살</strong><small>피해 14</small></button><button class="card-btn haru-card" data-card="pierce"><strong>관통 사격</strong><small>피해 18</small></button><button class="card-btn haru-card" data-card="cover"><strong>엄호</strong><small>피해 감소</small></button></div></div></section></div><div class="battle-version">Ver. ${VERSION}</div></main>`,()=>{const line=document.getElementById('battleLine'),label=document.getElementById('turnLabel'),buttons=[...document.querySelectorAll('.card-btn')];const eh=document.getElementById('enemyHp'),ph=document.getElementById('playerHp'),hh=document.getElementById('haruHp');const sync=()=>{eh.style.width=Math.max(0,enemy)/90*100+'%';ph.style.width=Math.max(0,player)/42*100+'%';hh.style.width=Math.max(0,haru)/48*100+'%';document.getElementById('enemyText').textContent=`${Math.max(0,enemy)} / 90`;document.getElementById('playerText').textContent=`${Math.max(0,player)} / 42`;document.getElementById('haruText').textContent=`${Math.max(0,haru)} / 48`};const setPhase=p=>{phase=p;buttons.forEach(b=>b.disabled=(p==='player'?!b.classList.contains('player-card'):p==='haru'?!b.classList.contains('haru-card'):true));label.textContent=p==='player'?`아군 1 · ${state.playerName}`:p==='haru'?'아군 2 · 하루':'적 1 · 정체불명의 생명체'};const special=()=>{if(haruSpecialUsed)return false;if(Math.random()<0.35){haruSpecialUsed=true;enemy-=24;sync();label.textContent='SPECIAL SKILL';line.innerHTML='<strong>하루 — 천체낙하</strong><br>푸른 천체의 빛이 적 전체를 덮쳤다. 24의 광역 피해!';return true}return false};const enemyTurn=()=>{setPhase('enemy');setTimeout(()=>{const target=Math.random()<.5?'player':'haru',dmg=guard?4:8;guard=0;if(target==='player'){player-=dmg;line.textContent=`검은 발톱이 ${state.playerName}을 덮쳤다. ${dmg}의 피해.`}else{haru-=dmg;line.textContent=`검은 생명체가 하루에게 달려들었다. ${dmg}의 피해.`}sync();setTimeout(()=>{line.textContent=`${state.playerName}의 차례입니다.`;setPhase('player')},650)},650)};buttons.forEach(btn=>btn.onclick=()=>{buttons.forEach(b=>b.disabled=true);let dmg=0,c=btn.dataset.card;if(c==='strike'){dmg=focused?18:10;focused=false;line.textContent=`${state.playerName}의 공격. ${dmg}의 피해.`}else if(c==='guard'){guard=1;line.textContent='공격에 대비해 자세를 낮췄다.'}else if(c==='wait'){focused=true;line.textContent='움직임을 읽으며 공격할 틈을 기다렸다.'}else if(c==='arrow'){dmg=14;line.textContent='하루의 빛의 화살이 검은 몸을 꿰뚫었다.'}else if(c==='pierce'){dmg=18;line.textContent='푸른 섬광이 적을 관통했다.'}else if(c==='cover'){guard=1;line.textContent='하루가 빛으로 적의 움직임을 묶었다.'}enemy-=dmg;sync();if(enemy<=0){line.textContent='VICTORY · 화면을 터치하여 계속';app.firstElementChild.addEventListener('click',next,{once:true});return}if(phase==='player'){setTimeout(()=>{line.textContent='하루의 차례입니다.';setPhase('haru')},450)}else{setTimeout(()=>{if(special()){if(enemy<=0){setTimeout(()=>{line.textContent='VICTORY · 화면을 터치하여 계속';app.firstElementChild.addEventListener('click',next,{once:true})},850)}else setTimeout(enemyTurn,1000)}else enemyTurn()},450)}});sync();setPhase('player')})}
-function renderReward(scene){const before=state.exp,target=Math.min(99,before+scene.exp);mount(`<main class="screen reward-screen"><section class="reward-panel"><div class="reward-kicker">BATTLE RESULT</div><div class="reward-title">VICTORY</div><div class="reward-exp">경험치 획득<br><strong>EXP +${scene.exp}</strong></div><div class="exp-track"><span id="expFill" style="width:${before}%"></span></div><div class="exp-number" id="expNumber">${before}%</div></section><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`,()=>{requestAnimationFrame(()=>requestAnimationFrame(()=>{document.getElementById('expFill').style.width=target+'%';document.getElementById('expNumber').textContent=target+'%';state.exp=target;save()}));app.firstElementChild.onclick=next})}
-function renderMainLobby(scene){mount(`<main class="screen main-lobby"><header class="lobby-top"><div class="level-badge">Lv. ${state.level}</div><div class="stamina"><span>활력</span><b>${state.stamina} / ${state.maxStamina}</b></div><div class="credits"><span>크레딧</span><b>${state.credits.toLocaleString()}</b></div><button class="mission-btn">임무</button></header><section class="hero-zone"><div class="hero-placeholder">HEROINE</div><div class="speech"><strong>${scene.speaker||'하루'}</strong><p>${scene.text.replace(/\n/g,'<br>')}</p></div></section><nav class="tiles"><button class="tile guild-tile"><span>01</span><strong>길드</strong></button>${[2,3,4,5,6].map(n=>`<button class="tile" disabled><span>0${n}</span><strong>잠김</strong></button>`).join('')}</nav><div class="tile-guide">빛나는 길드 타일을 선택하세요</div><div class="version">Ver. ${VERSION}</div></main>`,()=>document.querySelector('.guild-tile').onclick=next)}
-function renderScene(scene){if(scene.opening){mount(`<main class="screen chapter cinematic-chapter"><div class="chapter-title">CHAPTER ${scene.chapter||state.chapter}</div>${scene.title?`<div class="chapter-sub">${scene.title}</div>`:''}<div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`,()=>app.firstElementChild.onclick=next);return}if(scene.clear){mount(`<main class="screen chapter cinematic-chapter"><div class="chapter-title">CHAPTER ${scene.chapter||state.chapter} CLEAR</div><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`,()=>app.firstElementChild.onclick=next);return}if(scene.type==='chapter2'){state.chapter=2;mount(`<main class="screen chapter cinematic-chapter"><div class="chapter-title">CHAPTER 2</div><div class="chapter-sub">기록되지 않은 사람</div><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`,()=>app.firstElementChild.onclick=next);return}if(scene.type==='mainLobby'){renderMainLobby(scene);return}if(scene.type==='reward'){renderReward(scene);return}if(scene.type==='guildMission'){mount(`<main class="screen guild-terminal"><section class="terminal-panel"><div class="text">${scene.text.replace(/\n/g,'<br>')}</div></section><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`,()=>app.firstElementChild.onclick=next);return}if(scene.type==='noRecord'){mount(`<main class="screen no-record"><section class="no-record-panel"><div class="text">${scene.text.replace(/\n/g,'<br>')}</div></section><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`,()=>app.firstElementChild.onclick=next);return}if(scene.type==='levelup'){renderLevelUp(scene);return}if(scene.type==='battle'){renderBattleIntro();return}const speaker=typeof scene.speaker==='function'?scene.speaker(state):scene.speaker;const body=typeof scene.dynamic==='function'?scene.dynamic(state):scene.text;mount(`<main class="screen ${scene.type}"><section class="box">${speaker?`<div class="speaker">${speaker}</div>`:''}<div class="text">${body.replace(/\n/g,'<br>')}</div></section><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`,()=>app.firstElementChild.onclick=next)}
-function next(){if(locked)return;locked=true;setTimeout(()=>locked=false,480);index++;if(index>=scenes.length){index=scenes.length-1;return}const scene=scenes[index];if(scene.type==='name')renderName();else renderScene(scene)}
+const app = document.getElementById('app');
+const VERSION = '2.2';
+
+const state = {
+  playerName: localStorage.getItem('mongyeong.playerName') || '여행자',
+  level: Number(localStorage.getItem('mongyeong.level') || 1),
+  exp: Number(localStorage.getItem('mongyeong.exp') || 0),
+  chapter: 1,
+  stamina: 200,
+  maxStamina: 200,
+  credits: Number(localStorage.getItem('mongyeong.credits') || 0)
+};
+
+let scenes = window.CHAPTER_1 || [];
+let index = -1;
+let locked = false;
+
+function save() {
+  localStorage.setItem('mongyeong.playerName', state.playerName);
+  localStorage.setItem('mongyeong.level', String(state.level));
+  localStorage.setItem('mongyeong.exp', String(state.exp));
+  localStorage.setItem('mongyeong.credits', String(state.credits));
+}
+
+function mount(html, onReady) {
+  const old = app.firstElementChild;
+  const show = () => {
+    app.innerHTML = html;
+    if (onReady) onReady();
+  };
+  if (!old) {
+    show();
+    return;
+  }
+  old.classList.add('leaving');
+  setTimeout(show, 420);
+}
+
+function title() {
+  mount(`<main class="screen title">
+    <div class="logo">夢境</div>
+    <div class="subtitle">잠든 세계</div>
+    <div class="start">화면을 터치하여 시작</div>
+    <div class="version">Ver. ${VERSION}</div>
+  </main>`, () => {
+    app.firstElementChild.addEventListener('click', next, { once: true });
+  });
+}
+
+function renderName() {
+  mount(`<main class="screen black">
+    <div class="name-wrap">
+      <div class="text">내 이름은—</div>
+      <input id="name" class="name-input" maxlength="10" placeholder="이름을 입력하세요" value="${state.playerName === '여행자' ? '' : state.playerName}">
+      <button id="confirm" class="confirm">확인</button>
+    </div>
+    <div class="version">Ver. ${VERSION}</div>
+  </main>`, () => {
+    const input = document.getElementById('name');
+    const submit = () => {
+      const value = input.value.trim();
+      if (!value) return;
+      state.playerName = value;
+      save();
+      next();
+    };
+    document.getElementById('confirm').onclick = submit;
+    input.addEventListener('keydown', event => {
+      if (event.key === 'Enter') submit();
+    });
+    input.focus();
+  });
+}
+
+function levelTheme(level) {
+  if (level <= 25) return 'level-blue';
+  if (level <= 50) return 'level-noise';
+  if (level <= 75) return 'level-red-noise';
+  return 'level-fracture';
+}
+
+function renderLevelUp() {
+  const from = state.level;
+  state.exp = 100;
+  save();
+  mount(`<main class="screen status ${levelTheme(from + 1)}">
+    <section class="box">
+      <div class="chapter-title">EXP MAX</div>
+      <div class="exp-track"><span style="width:100%"></span></div>
+      <div class="text" style="margin-top:18px">남은 경험치가 채워졌습니다.</div>
+    </section>
+    <div class="hint">터치하여 계속</div>
+    <div class="version">Ver. ${VERSION}</div>
+  </main>`, () => {
+    app.firstElementChild.onclick = () => {
+      state.level = from + 1;
+      state.exp = 0;
+      save();
+      mount(`<main class="screen status ${levelTheme(state.level)}">
+        <section class="box">
+          <div class="chapter-title">LEVEL UP</div>
+          <div class="text" style="margin-top:18px">Lv. ${from} → Lv. ${state.level}</div>
+        </section>
+        <div class="hint">터치하여 계속</div>
+        <div class="version">Ver. ${VERSION}</div>
+      </main>`, () => {
+        app.firstElementChild.onclick = next;
+      });
+    };
+  });
+}
+
+function renderBattleIntro() {
+  mount(`<main class="screen battle-intro">
+    <div class="battle-start-flash">BATTLE START</div>
+    <div class="battle-start-sub">적과 조우했습니다</div>
+    <div class="version">Ver. ${VERSION}</div>
+  </main>`, () => {
+    setTimeout(renderBattle, 1100);
+  });
+}
+
+function renderBattle() {
+  let enemy = 90;
+  let player = 42;
+  let haru = 48;
+  let phase = 'player';
+  let focused = false;
+  let guard = false;
+  let haruSpecialUsed = false;
+
+  mount(`<main class="screen battle-screen">
+    <div class="battle-controls">
+      <button class="control-btn locked">🔒 ×1</button>
+      <button class="control-btn locked">🔒 AUTO</button>
+    </div>
+    <div class="battle-layout">
+      <section class="battle-top">
+        <div class="unit-head"><span>정체불명의 생명체</span><span id="enemyText">90 / 90</span></div>
+        <div class="hp enemy-hp"><span id="enemyHp"></span></div>
+      </section>
+      <section class="battle-middle">
+        <div class="turn-label" id="turnLabel"></div>
+        <div class="battle-line" id="battleLine"></div>
+      </section>
+      <section class="allies">
+        <div class="ally-panel">
+          <div class="unit-head"><span>${state.playerName}</span><span id="playerText">42 / 42</span></div>
+          <div class="hp"><span id="playerHp"></span></div>
+          <div class="cards">
+            <button class="card-btn player-card" data-card="strike"><strong>공격</strong><small>피해 10</small></button>
+            <button class="card-btn player-card" data-card="guard"><strong>방어</strong><small>피해 감소</small></button>
+            <button class="card-btn player-card" data-card="wait"><strong>틈 보기</strong><small>다음 공격 강화</small></button>
+          </div>
+        </div>
+        <div class="ally-panel">
+          <div class="unit-head"><span>하루</span><span id="haruText">48 / 48</span></div>
+          <div class="hp"><span id="haruHp"></span></div>
+          <div class="cards">
+            <button class="card-btn haru-card" data-card="arrow"><strong>빛의 화살</strong><small>피해 14</small></button>
+            <button class="card-btn haru-card" data-card="pierce"><strong>관통 사격</strong><small>피해 18</small></button>
+            <button class="card-btn haru-card" data-card="cover"><strong>엄호</strong><small>피해 감소</small></button>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div class="battle-version">Ver. ${VERSION}</div>
+  </main>`, () => {
+    const line = document.getElementById('battleLine');
+    const label = document.getElementById('turnLabel');
+    const buttons = Array.from(document.querySelectorAll('.card-btn'));
+
+    function sync() {
+      document.getElementById('enemyHp').style.width = `${Math.max(0, enemy) / 90 * 100}%`;
+      document.getElementById('playerHp').style.width = `${Math.max(0, player) / 42 * 100}%`;
+      document.getElementById('haruHp').style.width = `${Math.max(0, haru) / 48 * 100}%`;
+      document.getElementById('enemyText').textContent = `${Math.max(0, enemy)} / 90`;
+      document.getElementById('playerText').textContent = `${Math.max(0, player)} / 42`;
+      document.getElementById('haruText').textContent = `${Math.max(0, haru)} / 48`;
+    }
+
+    function setPhase(nextPhase) {
+      phase = nextPhase;
+      buttons.forEach(button => {
+        if (phase === 'player') button.disabled = !button.classList.contains('player-card');
+        else if (phase === 'haru') button.disabled = !button.classList.contains('haru-card');
+        else button.disabled = true;
+      });
+      if (phase === 'player') label.textContent = `아군 1 · ${state.playerName}`;
+      else if (phase === 'haru') label.textContent = '아군 2 · 하루';
+      else label.textContent = '적 1 · 정체불명의 생명체';
+    }
+
+    function victory() {
+      buttons.forEach(button => { button.disabled = true; });
+      label.textContent = 'VICTORY';
+      line.textContent = '화면을 터치하여 계속';
+      app.firstElementChild.addEventListener('click', next, { once: true });
+    }
+
+    function tryHaruSpecial() {
+      if (haruSpecialUsed || Math.random() >= 0.35) return false;
+      haruSpecialUsed = true;
+      enemy -= 24;
+      sync();
+      label.textContent = 'SPECIAL SKILL';
+      line.innerHTML = '<strong>하루 — 천체낙하</strong><br>푸른 천체의 빛이 적 전체를 덮쳤다. 24의 광역 피해!';
+      return true;
+    }
+
+    function enemyTurn() {
+      setPhase('enemy');
+      setTimeout(() => {
+        const targetPlayer = Math.random() < 0.5;
+        const damage = guard ? 4 : 8;
+        guard = false;
+        if (targetPlayer) {
+          player -= damage;
+          line.textContent = `검은 발톱이 ${state.playerName}을 덮쳤다. ${damage}의 피해.`;
+        } else {
+          haru -= damage;
+          line.textContent = `검은 생명체가 하루에게 달려들었다. ${damage}의 피해.`;
+        }
+        sync();
+        setTimeout(() => {
+          line.textContent = `${state.playerName}의 차례입니다.`;
+          setPhase('player');
+        }, 650);
+      }, 650);
+    }
+
+    buttons.forEach(button => {
+      button.onclick = () => {
+        buttons.forEach(item => { item.disabled = true; });
+        const card = button.dataset.card;
+        let damage = 0;
+
+        if (card === 'strike') {
+          damage = focused ? 18 : 10;
+          focused = false;
+          line.textContent = `${state.playerName}의 공격. ${damage}의 피해.`;
+        } else if (card === 'guard') {
+          guard = true;
+          line.textContent = '공격에 대비해 자세를 낮췄다.';
+        } else if (card === 'wait') {
+          focused = true;
+          line.textContent = '움직임을 읽으며 공격할 틈을 기다렸다.';
+        } else if (card === 'arrow') {
+          damage = 14;
+          line.textContent = '하루의 빛의 화살이 검은 몸을 꿰뚫었다.';
+        } else if (card === 'pierce') {
+          damage = 18;
+          line.textContent = '푸른 섬광이 적을 관통했다.';
+        } else if (card === 'cover') {
+          guard = true;
+          line.textContent = '하루가 빛으로 적의 움직임을 묶었다.';
+        }
+
+        enemy -= damage;
+        sync();
+        if (enemy <= 0) {
+          victory();
+          return;
+        }
+
+        if (phase === 'player') {
+          setTimeout(() => {
+            line.textContent = '하루의 차례입니다.';
+            setPhase('haru');
+          }, 450);
+          return;
+        }
+
+        setTimeout(() => {
+          if (tryHaruSpecial()) {
+            if (enemy <= 0) setTimeout(victory, 850);
+            else setTimeout(enemyTurn, 1000);
+          } else {
+            enemyTurn();
+          }
+        }, 450);
+      };
+    });
+
+    sync();
+    line.textContent = `${state.playerName}의 차례입니다.`;
+    setPhase('player');
+  });
+}
+
+function renderReward(scene) {
+  const before = state.exp;
+  const target = Math.min(99, before + scene.exp);
+  mount(`<main class="screen reward-screen">
+    <section class="reward-panel">
+      <div class="reward-kicker">BATTLE RESULT</div>
+      <div class="reward-title">VICTORY</div>
+      <div class="reward-exp">경험치 획득<br><strong>EXP +${scene.exp}</strong></div>
+      <div class="exp-track"><span id="expFill" style="width:${before}%"></span></div>
+      <div class="exp-number" id="expNumber">${before}%</div>
+    </section>
+    <div class="hint">터치하여 계속</div>
+    <div class="version">Ver. ${VERSION}</div>
+  </main>`, () => {
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      document.getElementById('expFill').style.width = `${target}%`;
+      document.getElementById('expNumber').textContent = `${target}%`;
+      state.exp = target;
+      save();
+    }));
+    app.firstElementChild.onclick = next;
+  });
+}
+
+function renderMainLobby(scene) {
+  mount(`<main class="screen main-lobby">
+    <header class="lobby-top">
+      <div class="level-badge">Lv. ${state.level}</div>
+      <div class="stamina"><span>활력</span><b>${state.stamina} / ${state.maxStamina}</b></div>
+      <div class="credits"><span>크레딧</span><b>${state.credits.toLocaleString()}</b></div>
+      <button class="mission-btn">임무</button>
+    </header>
+    <section class="hero-zone"><div class="hero-placeholder">HEROINE</div><div class="speech"><strong>${scene.speaker || '하루'}</strong><p>${scene.text.replace(/\n/g, '<br>')}</p></div></section>
+    <nav class="tiles"><button class="tile guild-tile"><span>01</span><strong>길드</strong></button>${[2,3,4,5,6].map(n => `<button class="tile" disabled><span>0${n}</span><strong>잠김</strong></button>`).join('')}</nav>
+    <div class="tile-guide">빛나는 길드 타일을 선택하세요</div>
+    <div class="version">Ver. ${VERSION}</div>
+  </main>`, () => {
+    document.querySelector('.guild-tile').onclick = next;
+  });
+}
+
+function renderScene(scene) {
+  if (scene.opening) {
+    mount(`<main class="screen chapter cinematic-chapter"><div class="chapter-title">CHAPTER ${scene.chapter || state.chapter}</div>${scene.title ? `<div class="chapter-sub">${scene.title}</div>` : ''}<div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`, () => app.firstElementChild.onclick = next);
+    return;
+  }
+  if (scene.clear) {
+    mount(`<main class="screen chapter cinematic-chapter"><div class="chapter-title">CHAPTER ${scene.chapter || state.chapter} CLEAR</div><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`, () => app.firstElementChild.onclick = next);
+    return;
+  }
+  if (scene.type === 'chapter2') {
+    state.chapter = 2;
+    mount(`<main class="screen chapter cinematic-chapter"><div class="chapter-title">CHAPTER 2</div><div class="chapter-sub">기록되지 않은 사람</div><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`, () => app.firstElementChild.onclick = next);
+    return;
+  }
+  if (scene.type === 'mainLobby') { renderMainLobby(scene); return; }
+  if (scene.type === 'reward') { renderReward(scene); return; }
+  if (scene.type === 'levelup') { renderLevelUp(); return; }
+  if (scene.type === 'battle') { renderBattleIntro(); return; }
+  if (scene.type === 'guildMission') {
+    mount(`<main class="screen guild-terminal"><section class="terminal-panel"><div class="text">${scene.text.replace(/\n/g, '<br>')}</div></section><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`, () => app.firstElementChild.onclick = next);
+    return;
+  }
+  if (scene.type === 'noRecord') {
+    mount(`<main class="screen no-record"><section class="no-record-panel"><div class="text">${scene.text.replace(/\n/g, '<br>')}</div></section><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`, () => app.firstElementChild.onclick = next);
+    return;
+  }
+  const speaker = typeof scene.speaker === 'function' ? scene.speaker(state) : scene.speaker;
+  const body = typeof scene.dynamic === 'function' ? scene.dynamic(state) : scene.text;
+  mount(`<main class="screen ${scene.type}"><section class="box">${speaker ? `<div class="speaker">${speaker}</div>` : ''}<div class="text">${body.replace(/\n/g, '<br>')}</div></section><div class="hint">터치하여 계속</div><div class="version">Ver. ${VERSION}</div></main>`, () => app.firstElementChild.onclick = next);
+}
+
+function next() {
+  if (locked) return;
+  locked = true;
+  setTimeout(() => { locked = false; }, 480);
+  index += 1;
+  if (index >= scenes.length) {
+    index = scenes.length - 1;
+    return;
+  }
+  const scene = scenes[index];
+  if (scene.type === 'name') renderName();
+  else renderScene(scene);
+}
+
 title();
