@@ -29,7 +29,18 @@ window.CHAPTER_3=[
   {type:'black',text:'……아침부터 정신이 하나도 없군.'},
   {type:'lodgingExit',text:'길드로 가려면 숙소에서 나가야 한다.'},
   {type:'mainLobby',speaker:'모모',text:'길드로 가는 거지?\n나도 같이 갈게.',destination:'guild'},
-  {type:'city',text:'길드 타일을 선택하자 익숙한 거리로 화면이 전환되었다.\n모모는 자연스럽게 내 옆을 따라 걸었다.'},
-  {type:'guild',text:'길드의 문을 열자 넓은 홀이 모습을 드러냈다.\n접수대와 임무 게시판 앞은 아침부터 수많은 사람으로 붐비고 있었다.'},
-  {type:'guild',text:'나는 모모와 함께 안내소가 있는 접수대 쪽으로 향했다.'}
+  {type:'city',text:'길드가 가까워지자 건물 안쪽에서 큰 목소리가 새어 나왔다.'},
+  {type:'city',speaker:'???',text:'아무리 사정이 딱해도 그렇지!\n길드 숙소를 마음대로 내주면 어쩌자는 거야!'},
+  {type:'city',text:'문이 닫혀 있었는데도 목소리는 거리까지 또렷하게 들렸다.\n모모와 나는 잠시 서로를 바라봤다.'},
+  {type:'guild',text:'문을 열고 들어가자 접수대 앞에 거구의 남성과 안내원이 서 있었다.\n남성은 두꺼운 팔을 꼬아 낀 채 안내원을 내려다보고 있었다.'},
+  {type:'guild',speaker:'안내원',text:'길드장님, 하지만 어제 그분은 정말 갈 곳도 없었고…….'},
+  {type:'guild',speaker:'길드장',text:'그래서 무상으로 재워줬다고?\n여기가 자선 시설인 줄 알아?'},
+  {type:'guild',text:'그제야 나는 두 사람이 누구에 대해 이야기하고 있는지 알아차렸다.'},
+  {type:'guild',speaker:state=>state.playerName,text:'잠시만요.\n어제 숙소를 이용한 사람은 접니다.'},
+  {type:'guild',text:'두 사람의 시선이 동시에 내게 향했다.\n길드장은 나를 위아래로 천천히 훑어봤다.'},
+  {type:'guild',speaker:state=>state.playerName,text:'신세를 진 값은 제가 치르겠습니다.\n제가 할 수 있는 일이 있다면 시켜주십시오.'},
+  {type:'guild',speaker:'길드장',text:'할 수 있는 일이라…….'},
+  {type:'guild',text:'길드장은 잠시 생각하더니 귀찮다는 듯 머리를 긁었다.'},
+  {type:'guild',speaker:'길드장',text:'마침 아무도 맡으려 하지 않는 귀찮은 일이 하나 있지.\n그거라도 해.'},
+  {type:'guild',speaker:state=>state.playerName,text:'알겠습니다.'}
 ];
