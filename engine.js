@@ -1,5 +1,5 @@
 const app=document.getElementById('app');
-const VERSION='0.9';
+const VERSION='1.0';
 const state={playerName:localStorage.getItem('mongyeong.playerName')||'여행자',level:Number(localStorage.getItem('mongyeong.level')||1),chapter:1};
 let scenes=window.CHAPTER_1||[];let index=-1;let locked=false;
 function save(){localStorage.setItem('mongyeong.playerName',state.playerName);localStorage.setItem('mongyeong.level',String(state.level));}
