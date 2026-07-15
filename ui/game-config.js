@@ -1,5 +1,5 @@
 (()=>{
-  const GAME_VERSION='3.7';
+  const GAME_VERSION='3.8';
 
   window.GAME_VERSION=GAME_VERSION;
   window.gameVersionText=()=>`Ver. ${GAME_VERSION}`;
