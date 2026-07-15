@@ -40,5 +40,8 @@ window.CHAPTER_4=[
   {type:'guild',speaker:'하루',text:'오늘은 푹 쉬세요.\n내일 아침, 훈련장으로 오세요.'},
   {type:'guild',text:'하루는 나와 모모를 번갈아 바라봤다.'},
   {type:'guild',speaker:'하루',text:'제가 직접 훈련시키겠습니다.'},
-  {type:'black',text:'다음 날 — 훈련장'}
+  {type:'black',text:'그렇게 길고 긴 하루가 끝났다.\n\n이 세계에서 살아남으려면, 오늘보다 강해져야 한다.\n다시는 아무것도 하지 못한 채 누군가를 기다리고 싶지 않았다.'},
+  {type:'black',text:'다음 날 — 훈련장'},
+  {type:'mainLobby',speaker:'하루',text:'훈련장은 마을 안쪽에 있어요.\n새로 열린 마을 타일을 선택하세요.',destination:'village',missionTitle:'CHAPTER 4 · 첫 번째 성장',missionGoal:'마을의 훈련장으로 이동하세요.',missionProgress:10},
+  {type:'city',text:'마을 안쪽에는 훈련장과 장비 공방을 비롯해 헌터들이 이용하는 여러 시설이 모여 있었다.\n나는 하루와 모모를 따라 훈련장으로 향했다.'}
 ];
