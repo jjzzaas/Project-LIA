@@ -1,10 +1,10 @@
 (()=>{
-  const versionText=()=>window.gameVersionText?.()||'Ver. 3.7';
+  const versionText=()=>window.gameVersionText?.()||'Ver. 3.8';
   const wait=(ms,speed=1)=>new Promise(resolve=>setTimeout(resolve,Math.max(140,Math.round(ms/speed))));
 
   function renderTrainingBattle(){
     const player={name:state.playerName,hp:42,maxHp:42,damage:8};
-    const haru={name:'하루',hp:38,maxHp:38,damage:7};
+    const haru={name:'하루',hp:120,maxHp:120,damage:12};
     let playerTurn=true;
     let ended=false;
 
@@ -21,16 +21,16 @@
           document.getElementById('trainingPlayerHp').style.width=`${Math.max(0,player.hp)/player.maxHp*100}%`;
           document.getElementById('trainingHaruText').textContent=`${Math.max(0,haru.hp)} / ${haru.maxHp}`;
           document.getElementById('trainingPlayerText').textContent=`${Math.max(0,player.hp)} / ${player.maxHp}`;
-          enemyCard.classList.toggle('is-defeated',haru.hp<=0);playerCard.classList.toggle('is-defeated',player.hp<=0);
+          playerCard.classList.toggle('is-defeated',player.hp<=0);
         };
-        const complete=result=>{
+        const complete=()=>{
           if(ended)return;ended=true;playerCard.disabled=true;enemyCard.disabled=true;label.textContent='TRAINING COMPLETE';
-          line.textContent=result==='win'?'하루가 한 걸음 물러서며 훈련을 종료했습니다.':'하루가 쓰러지는 주인공을 붙잡고 훈련을 종료했습니다.';
+          line.textContent='하루가 쓰러지는 주인공을 붙잡고 훈련을 종료했습니다.';
           localStorage.setItem('mongyeong.speedUnlocked','1');
           setTimeout(()=>{line.textContent+=' 화면을 터치하여 계속';app.firstElementChild.addEventListener('click',next,{once:true});},650);
         };
-        const haruTurn=()=>{if(ended)return;playerTurn=false;playerCard.disabled=true;label.textContent='상대 턴 · 하루';setTimeout(()=>{player.hp-=haru.damage;line.textContent=`하루가 주인공의 빈틈을 짚었습니다. ${haru.damage}의 피해.`;sync();if(player.hp<=0){setTimeout(()=>complete('lose'),500);return;}setTimeout(()=>{playerTurn=true;playerCard.disabled=false;playerCard.classList.remove('is-acted');playerCard.querySelector('.battle-card-order').textContent='';label.textContent='아군 턴 · 행동할 캐릭터 선택';line.textContent='주인공 카드를 터치하세요.';},600);},450);};
-        playerCard.onclick=()=>{if(!playerTurn||ended||playerCard.disabled)return;playerTurn=false;playerCard.disabled=true;playerCard.classList.add('is-acted');playerCard.querySelector('.battle-card-order').textContent='1번째 행동';haru.hp-=player.damage;line.textContent=`${player.name}이 맨손으로 하루를 공격했습니다. ${player.damage}의 피해.`;sync();if(haru.hp<=0){setTimeout(()=>complete('win'),500);return;}setTimeout(haruTurn,450);};
+        const haruTurn=()=>{if(ended)return;playerTurn=false;playerCard.disabled=true;label.textContent='상대 턴 · 하루';setTimeout(()=>{player.hp-=haru.damage;line.textContent=`하루가 주인공의 빈틈을 짚었습니다. ${haru.damage}의 피해.`;sync();if(player.hp<=0){setTimeout(complete,500);return;}setTimeout(()=>{playerTurn=true;playerCard.disabled=false;playerCard.classList.remove('is-acted');playerCard.querySelector('.battle-card-order').textContent='';label.textContent='아군 턴 · 행동할 캐릭터 선택';line.textContent='주인공 카드를 터치하세요.';},600);},450);};
+        playerCard.onclick=()=>{if(!playerTurn||ended||playerCard.disabled)return;playerTurn=false;playerCard.disabled=true;playerCard.classList.add('is-acted');playerCard.querySelector('.battle-card-order').textContent='1번째 행동';haru.hp=Math.max(1,haru.hp-player.damage);line.textContent=`${player.name}이 맨손으로 하루를 공격했습니다. ${player.damage}의 피해.`;sync();setTimeout(haruTurn,450);};
         sync();
       });
     }
