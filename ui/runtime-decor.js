@@ -2,7 +2,7 @@
   const app=document.getElementById('app');
   if(!app)return;
 
-  const VERSION='2.9';
+  const VERSION='3.0';
 
   function apply(){
     document.querySelectorAll('.version,.battle-version').forEach(el=>{
