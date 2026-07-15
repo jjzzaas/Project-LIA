@@ -2,9 +2,11 @@
   const app=document.getElementById('app');
   if(!app)return;
 
+  const VERSION='2.9';
+
   function apply(){
     document.querySelectorAll('.version,.battle-version').forEach(el=>{
-      if(el.textContent!=='Ver. 2.8')el.textContent='Ver. 2.8';
+      if(el.textContent!==`Ver. ${VERSION}`)el.textContent=`Ver. ${VERSION}`;
     });
     const title=document.querySelector('.chapter-title');
     if(title?.textContent?.trim()==='CHAPTER 1'&&!title.parentElement?.querySelector('.chapter-sub')){
