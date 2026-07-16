@@ -4,7 +4,7 @@
 
   const createDefaultSave=()=>({
     schemaVersion:SAVE_SCHEMA_VERSION,
-    gameVersion:window.GAME_VERSION||'4.2',
+    gameVersion:window.GAME_VERSION||'4.3',
     player:{
       name:'여행자',
       level:1,
@@ -68,12 +68,34 @@
     }
   };
 
+  const clearSave=()=>{
+    try{
+      localStorage.removeItem(STORAGE_KEY);
+      [
+        'mongyeong.playerName',
+        'mongyeong.level',
+        'mongyeong.exp',
+        'mongyeong.credits',
+        'mongyeong.stamina',
+        'mongyeong.maxStamina',
+        'mongyeong.nightmareEssence',
+        'mongyeong.haruAffinity',
+        'mongyeong.momoAffinity'
+      ].forEach(key=>localStorage.removeItem(key));
+      return true;
+    }catch(error){
+      console.warn('[save] 저장 데이터를 초기화하지 못했습니다.',error);
+      return false;
+    }
+  };
+
   window.MONGYEONG_SAVE={
     STORAGE_KEY,
     SAVE_SCHEMA_VERSION,
     createDefaultSave,
     normalizeSave,
     readSave,
-    writeSave
+    writeSave,
+    clearSave
   };
 })();
