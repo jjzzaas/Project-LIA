@@ -1,6 +1,6 @@
 (()=>{
-  const VERSION='2.9';
-  const MAX_IMPLEMENTED_CHAPTER=3;
+  const VERSION='5.1';
+  const MAX_IMPLEMENTED_CHAPTER=4;
 
   function isCleared(chapter){
     return localStorage.getItem(`mongyeong.chapterClear.${chapter}`)==='1';
@@ -16,7 +16,7 @@
   }
 
   // 레벨은 반복 전투 횟수가 아니라 완료한 챕터 수를 기준으로 복구한다.
-  // 시작 Lv.1 / 챕터 1 클리어 Lv.2 / 챕터 2 클리어 Lv.3 / 챕터 3 클리어 Lv.4
+  // 시작 Lv.1 / 챕터 1~4 클리어 시 각각 Lv.2~5
   const correctedLevel=1+clearedChapterCount();
   if(state.level!==correctedLevel){
     state.level=correctedLevel;
@@ -35,7 +35,7 @@
       <div class="chapter-title">CHAPTER ${chapter} CLEAR</div>
       ${scene.title?`<div class="chapter-sub">${scene.title}</div>`:''}
       <div class="hint">터치하여 계속</div>
-      <div class="version">Ver. ${VERSION}</div>
+      <div class="version">${window.gameVersionText?.()||`Ver. ${VERSION}`}</div>
     </main>`,()=>{
       app.firstElementChild.onclick=()=>{
         state.exp=100;
@@ -47,7 +47,7 @@
             <div class="text" style="margin-top:18px">챕터 경험치가 모두 채워졌습니다.</div>
           </section>
           <div class="hint">터치하여 계속</div>
-          <div class="version">Ver. ${VERSION}</div>
+          <div class="version">${window.gameVersionText?.()||`Ver. ${VERSION}`}</div>
         </main>`,()=>{
           app.firstElementChild.onclick=()=>{
             const canLevel=!alreadyCleared&&before<limit;
@@ -61,7 +61,7 @@
                 <div class="text" style="margin-top:18px">${canLevel?`Lv. ${before} → Lv. ${state.level}`:`현재 챕터 최대 레벨 Lv. ${limit}`}</div>
               </section>
               <div class="hint">터치하여 계속</div>
-              <div class="version">Ver. ${VERSION}</div>
+              <div class="version">${window.gameVersionText?.()||`Ver. ${VERSION}`}</div>
             </main>`,()=>app.firstElementChild.onclick=next);
           };
         });
