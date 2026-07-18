@@ -20,19 +20,27 @@
   }
 
   function commitRelationshipChoice(scene,choice){
-    const affinityKey=scene.affinityKey||'haruAffinity';
-    const storageKey=`mongyeong.${affinityKey}`;
-    state[affinityKey]=(state[affinityKey]||Number(localStorage.getItem(storageKey)||0))+choice.affinity;
-    localStorage.setItem(storageKey,String(state[affinityKey]));
+    const affinityKey=choice.affinityKey===undefined?(scene.affinityKey||'haruAffinity'):choice.affinityKey;
+    const affinity=Number(choice.affinity||0);
+
+    if(affinityKey&&affinity!==0){
+      const storageKey=`mongyeong.${affinityKey}`;
+      state[affinityKey]=(state[affinityKey]||Number(localStorage.getItem(storageKey)||0))+affinity;
+      localStorage.setItem(storageKey,String(state[affinityKey]));
+    }
+
+    scene.selectedPlayerLine=choice.playerLine||'';
     scene.selectedResponse=choice.response;
     next();
   }
 
   window.renderRelationshipResponse=function(scene){
     const previous=scenes[index-1];
+    const playerLine=previous?.selectedPlayerLine||'';
     const response=previous?.selectedResponse||scene.fallback;
     const screenType=scene.screenType||'lodging-front';
-    mount(`<main class="screen ${screenType}"><section class="box"><div class="speaker">${scene.speaker||'하루'}</div><div class="text">${response.replace(/\n/g,'<br>')}</div></section><div class="hint">터치하여 계속</div><div class="version">${versionText()}</div></main>`,()=>app.firstElementChild.onclick=next);
+    const playerDialogue=playerLine?`<div class="speaker">주인공</div><div class="text">${playerLine.replace(/\n/g,'<br>')}</div>`:'';
+    mount(`<main class="screen ${screenType}"><section class="box">${playerDialogue}<div class="speaker">${scene.speaker||'하루'}</div><div class="text">${response.replace(/\n/g,'<br>')}</div></section><div class="hint">터치하여 계속</div><div class="version">${versionText()}</div></main>`,()=>app.firstElementChild.onclick=next);
   };
 
   const originalRenderScene=renderScene;
