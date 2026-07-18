@@ -1,9 +1,20 @@
 (()=>{
-  const VERSION='5.1';
+  const VERSION='5.2';
   const MAX_IMPLEMENTED_CHAPTER=4;
 
   function isCleared(chapter){
     return localStorage.getItem(`mongyeong.chapterClear.${chapter}`)==='1';
+  }
+
+  function markCleared(chapter){
+    localStorage.setItem(`mongyeong.chapterClear.${chapter}`,'1');
+  }
+
+  // 이전 버전 저장 데이터는 레벨은 저장되어 있어도 챕터 클리어 표식이 없을 수 있다.
+  // 현재 레벨을 기준으로 이미 완료한 챕터 표식을 먼저 복구해 레벨이 낮아지는 일을 막는다.
+  const clearedFromSavedLevel=Math.max(0,Math.min(MAX_IMPLEMENTED_CHAPTER,Number(state.level||1)-1));
+  for(let chapter=1;chapter<=clearedFromSavedLevel;chapter+=1){
+    if(!isCleared(chapter))markCleared(chapter);
   }
 
   function clearedChapterCount(){
@@ -15,7 +26,6 @@
     return count;
   }
 
-  // 레벨은 반복 전투 횟수가 아니라 완료한 챕터 수를 기준으로 복구한다.
   // 시작 Lv.1 / 챕터 1~4 클리어 시 각각 Lv.2~5
   const correctedLevel=1+clearedChapterCount();
   if(state.level!==correctedLevel){
@@ -79,7 +89,6 @@
   };
 
   // 챕터 1 주인공은 아직 특수 스킬을 보유하지 않는다.
-  // 현재 전투 데이터에서도 주인공 specialChance는 0이며, 아래 감시는 회귀 오류를 막는 안전장치다.
   const specialGuard=new MutationObserver(()=>{
     if(Number(window.SELECTED_CHAPTER||state.chapter||1)!==1)return;
     const label=document.getElementById('turnLabel');
