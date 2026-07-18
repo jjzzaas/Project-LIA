@@ -3,6 +3,9 @@
   const root=document.getElementById('app');
   if(!saveApi||!root)return;
 
+  const developerMode=new URLSearchParams(location.search).get('dev')==='1';
+  if(developerMode)return;
+
   let scheduled=false;
 
   function numberFromState(key,storageKey,fallback=0){
