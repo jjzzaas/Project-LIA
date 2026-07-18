@@ -1,5 +1,5 @@
 (()=>{
-  const VERSION='5.2';
+  const VERSION='5.3';
   const MAX_IMPLEMENTED_CHAPTER=4;
 
   function isCleared(chapter){
@@ -11,7 +11,7 @@
   }
 
   // 이전 버전 저장 데이터는 레벨은 저장되어 있어도 챕터 클리어 표식이 없을 수 있다.
-  // 현재 레벨을 기준으로 이미 완료한 챕터 표식을 먼저 복구해 레벨이 낮아지는 일을 막는다.
+  // 현재 레벨을 기준으로 이미 완료한 챕터 표식을 복구하되 현재 진행 중인 챕터 연출은 막지 않는다.
   const clearedFromSavedLevel=Math.max(0,Math.min(MAX_IMPLEMENTED_CHAPTER,Number(state.level||1)-1));
   for(let chapter=1;chapter<=clearedFromSavedLevel;chapter+=1){
     if(!isCleared(chapter))markCleared(chapter);
@@ -28,7 +28,7 @@
 
   // 시작 Lv.1 / 챕터 1~4 클리어 시 각각 Lv.2~5
   const correctedLevel=1+clearedChapterCount();
-  if(state.level!==correctedLevel){
+  if(state.level<correctedLevel){
     state.level=correctedLevel;
     state.exp=0;
     save();
@@ -37,9 +37,8 @@
   function renderCorrectChapterComplete(scene){
     const chapter=Number(scene.chapter||window.SELECTED_CHAPTER||state.chapter||1);
     const limit=chapter+1;
+    const before=Math.max(1,limit-1);
     const clearKey=`mongyeong.chapterClear.${chapter}`;
-    const alreadyCleared=localStorage.getItem(clearKey)==='1';
-    const before=Math.min(state.level,limit);
 
     mount(`<main class="screen chapter cinematic-chapter">
       <div class="chapter-title">CHAPTER ${chapter} CLEAR</div>
@@ -60,15 +59,14 @@
           <div class="version">${window.gameVersionText?.()||`Ver. ${VERSION}`}</div>
         </main>`,()=>{
           app.firstElementChild.onclick=()=>{
-            const canLevel=!alreadyCleared&&before<limit;
-            state.level=canLevel?limit:Math.min(state.level,limit);
+            state.level=Math.max(state.level,limit);
             state.exp=0;
             localStorage.setItem(clearKey,'1');
             save();
-            mount(`<main class="screen status ${levelTheme(state.level)}">
+            mount(`<main class="screen status ${levelTheme(limit)}">
               <section class="box">
-                <div class="chapter-title">${canLevel?'LEVEL UP':'LEVEL LIMIT'}</div>
-                <div class="text" style="margin-top:18px">${canLevel?`Lv. ${before} → Lv. ${state.level}`:`현재 챕터 최대 레벨 Lv. ${limit}`}</div>
+                <div class="chapter-title">LEVEL UP</div>
+                <div class="text" style="margin-top:18px">Lv. ${before} → Lv. ${limit}</div>
               </section>
               <div class="hint">터치하여 계속</div>
               <div class="version">${window.gameVersionText?.()||`Ver. ${VERSION}`}</div>
