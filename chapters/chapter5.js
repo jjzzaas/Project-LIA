@@ -6,16 +6,17 @@
     {type:'black',text:'아직 부족하다.\n오늘도 훈련장에 가자.'},
     {type:'lodging',text:'몸을 일으켜 준비를 마친 뒤 숙소를 나섰다.'},
 
-    {type:'city',text:'훈련장으로 향하던 중, 문득 모모가 떠올랐다.\n가기 전에 잠깐 얼굴을 보고 가도 괜찮을 것 같았다.'},
-    {type:'relationshipChoice',screenType:'city',speaker:'주인공',text:'모모 씨를 만나면 무슨 말을 해볼까?',affinityKey:'momoAffinity',choices:[
-      {text:'같이 훈련하자고 해본다.',playerLine:'혹시 오늘도 같이 훈련하시겠습니까?',affinityKey:'momoAffinity',affinity:2,response:'나도 같이 가고는 싶은데, 오늘은 맡은 일이 있어.\n미안. 다음에는 같이 가줄게.'},
-      {text:'인사만 하고 훈련장으로 간다.',playerLine:'훈련장에 가는 길이라 인사드리러 왔습니다.',affinityKey:null,affinity:0,response:'응.\n조심해서 다녀와.'},
-      {text:'오늘은 같이 놀자고 해본다.',playerLine:'오늘은 훈련 대신 같이 시간을 보내시는 건 어떻습니까?',affinityKey:'haruAffinity',affinity:-1,response:'나도 같이 놀고는 싶은데, 오늘은 맡은 일이 있어서 안 돼.\n미안. 다음에 시간 맞으면 같이 놀자.'}
+    {type:'city',text:'훈련장으로 향하던 길이었다.\n길 건너편에서 익숙한 모습이 다가왔다.'},
+    {type:'city',speaker:'모모',text:'어? 좋은 아침.\n훈련 가는 거야?'},
+    {type:'relationshipChoice',screenType:'city',speaker:'주인공',text:'모모에게 뭐라고 대답할까?',affinityKey:'momoAffinity',choices:[
+      {text:'훈련하러 간다고 대답한다.',playerLine:'네. 오늘도 훈련하러 가는 길입니다.',affinityKey:null,affinity:0,response:'응. 잘 다녀와.'},
+      {text:'같이 갈지 물어본다.',playerLine:'모모 씨도 같이 가실래요?',affinityKey:'momoAffinity',affinity:2,response:'나도 같이 가고 싶은데 오늘은 할 일이 있어.\n미안. 다음에는 같이 가자.'},
+      {text:'모모는 어디 가는지 묻는다.',playerLine:'모모 씨는 어디 가세요?',affinityKey:null,affinity:0,response:'나? 놀이공원.'}
     ]},
-    {type:'relationshipResponse',screenType:'city',speaker:'모모',fallback:'응. 조심해서 다녀와.'},
+    {type:'relationshipResponse',screenType:'city',speaker:'모모',fallback:'응. 잘 다녀와.'},
     {type:'city',speaker:'주인공',text:'알겠습니다.\n그럼 다녀오겠습니다.'},
-    {type:'city',speaker:'모모',text:'응. 잘 다녀와.'},
-    {type:'city',text:'모모와 인사를 마친 뒤 다시 훈련장으로 향했다.\n무슨 말을 건넸든, 오늘 해야 할 일은 달라지지 않았다.'},
+    {type:'city',speaker:'모모',text:'응. 조심해서 다녀와.'},
+    {type:'city',text:'모모와 헤어진 뒤 다시 훈련장으로 향했다.'},
     {type:'black',text:'오늘도 훈련한다.\n조금이라도 더 강해지기 위해서.'},
     {type:'city',text:'잠시 후, 헌터지구의 훈련장이 눈앞에 들어왔다.'}
   ];
