@@ -1,6 +1,7 @@
 (()=>{
   const STORAGE_KEY='mongyeong.save';
   const SAVE_SCHEMA_VERSION=1;
+  const LOBBY_TILE_IDS=['guild','lodging','exterior','village'];
 
   const createDefaultSave=()=>({
     schemaVersion:SAVE_SCHEMA_VERSION,
@@ -18,7 +19,8 @@
       chapter:1,
       sceneId:null,
       sceneIndex:-1,
-      completedChapters:[]
+      completedChapters:[],
+      unlockedLobbyTiles:[]
     },
     relationships:{
       haru:0,
@@ -29,17 +31,28 @@
   });
 
   const isPlainObject=value=>Boolean(value)&&typeof value==='object'&&!Array.isArray(value);
+  const normalizeLobbyTiles=value=>{
+    if(!Array.isArray(value))return [];
+    return [...new Set(value.filter(tile=>LOBBY_TILE_IDS.includes(tile)))];
+  };
 
   const normalizeSave=value=>{
     const defaults=createDefaultSave();
     if(!isPlainObject(value))return defaults;
+
+    const progress=isPlainObject(value.progress)?value.progress:{};
 
     return {
       ...defaults,
       ...value,
       schemaVersion:SAVE_SCHEMA_VERSION,
       player:{...defaults.player,...(isPlainObject(value.player)?value.player:{})},
-      progress:{...defaults.progress,...(isPlainObject(value.progress)?value.progress:{})},
+      progress:{
+        ...defaults.progress,
+        ...progress,
+        completedChapters:Array.isArray(progress.completedChapters)?progress.completedChapters:[],
+        unlockedLobbyTiles:normalizeLobbyTiles(progress.unlockedLobbyTiles)
+      },
       relationships:{...defaults.relationships,...(isPlainObject(value.relationships)?value.relationships:{})},
       flags:isPlainObject(value.flags)?{...value.flags}:{}
     };
@@ -68,6 +81,29 @@
     }
   };
 
+  const unlockLobbyTile=tileId=>{
+    if(!LOBBY_TILE_IDS.includes(tileId)){
+      console.warn(`[save] 알 수 없는 로비 타일입니다: ${tileId}`);
+      return readSave();
+    }
+
+    const current=readSave()||createDefaultSave();
+    const unlocked=new Set(current.progress.unlockedLobbyTiles);
+    unlocked.add(tileId);
+    current.progress.unlockedLobbyTiles=[...unlocked];
+    return writeSave(current);
+  };
+
+  const isLobbyTileUnlocked=tileId=>{
+    const current=readSave();
+    return Boolean(current?.progress.unlockedLobbyTiles.includes(tileId));
+  };
+
+  const getUnlockedLobbyTiles=()=>{
+    const current=readSave();
+    return current?[...current.progress.unlockedLobbyTiles]:[];
+  };
+
   const clearSave=()=>{
     try{
       localStorage.removeItem(STORAGE_KEY);
@@ -92,10 +128,14 @@
   window.MONGYEONG_SAVE={
     STORAGE_KEY,
     SAVE_SCHEMA_VERSION,
+    LOBBY_TILE_IDS,
     createDefaultSave,
     normalizeSave,
     readSave,
     writeSave,
+    unlockLobbyTile,
+    isLobbyTileUnlocked,
+    getUnlockedLobbyTiles,
     clearSave
   };
 })();
