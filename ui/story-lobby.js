@@ -12,7 +12,7 @@
 
   const blockedTypes=new Set([
     'battle','reward','levelup','chapter2','relationshipChoice','relationshipResponse',
-    'relationshipUnlock','chapterComplete','chapterTransition'
+    'relationshipUnlock','chapterComplete','chapterTransition','mainLobby'
   ]);
 
   function currentScene(){
@@ -28,7 +28,7 @@
 
     const screen=root.firstElementChild;
     if(!screen)return false;
-    if(screen.matches('.title,.battle-screen,.battle-intro,.reward-screen,.status,.cinematic-chapter,.relationship-choice,.relationship-unlock'))return false;
+    if(screen.matches('.title,.main-lobby,.battle-screen,.battle-intro,.reward-screen,.status,.cinematic-chapter,.relationship-choice,.relationship-unlock'))return false;
     return true;
   }
 
