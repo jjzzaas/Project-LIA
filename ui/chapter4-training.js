@@ -1,65 +1,56 @@
 (()=>{
-  const versionText=()=>window.gameVersionText?.()||'Ver. 3.8';
+  const versionText=()=>window.gameVersionText?.()||'Ver. 6.1';
+  const SPEED_KEY='mongyeong.battleSpeed';
+  const AUTO_KEY='mongyeong.battleAuto';
+  const AUTO_UNLOCK_KEY='mongyeong.autoUnlocked';
+  const getSpeed=()=>[1,2,3].includes(Number(localStorage.getItem(SPEED_KEY)))?Number(localStorage.getItem(SPEED_KEY)):1;
+  const getAuto=()=>localStorage.getItem(AUTO_KEY)==='1';
+  const isAutoUnlocked=()=>localStorage.getItem(AUTO_UNLOCK_KEY)==='1';
   const wait=(ms,speed=1)=>new Promise(resolve=>setTimeout(resolve,Math.max(140,Math.round(ms/speed))));
 
   function renderTrainingBattle(){
     const player={name:state.playerName,hp:42,maxHp:42,damage:8};
     const haru={name:'하루',hp:120,maxHp:120,damage:12};
-    let playerTurn=true;
-    let ended=false;
-
+    let playerTurn=true,ended=false,speed=getSpeed(),auto=isAutoUnlocked()&&getAuto(),autoTimer=null;
     mount(`<main class="screen battle-intro"><div class="battle-start-flash">BATTLE START</div><div class="battle-start-sub">하루와의 기초 공격 훈련</div><div class="version">${versionText()}</div></main>`,()=>setTimeout(startBattle,1050));
-
     function startBattle(){
-      mount(`<main class="screen battle-screen training-battle-screen"><div class="battle-controls"><button class="control-btn locked" disabled>🔒 ×1</button><button class="control-btn locked" disabled>🔒 AUTO</button></div><div class="battle-layout battle-layout-v24"><section class="enemy-formation chapter3-enemies"><button class="battle-enemy-card is-targeted" data-training-enemy><strong>하루</strong><div class="hp enemy-hp"><span id="trainingHaruHp"></span></div><em id="trainingHaruText">${haru.hp} / ${haru.maxHp}</em></button>${[2,3,4,5].map(slot=>`<div class="battle-enemy-card is-empty"><span>적 ${slot}</span></div>`).join('')}</section><section class="battle-middle"><div class="turn-label" id="trainingTurnLabel">아군 턴 · 행동할 캐릭터 선택</div><div class="battle-line" id="trainingBattleLine">주인공 카드를 터치하세요.</div></section><section class="battle-cards"><button class="battle-character-card" data-training-player><span class="battle-card-order"></span><strong>${player.name}</strong><small>맨손 공격 · 피해 ${player.damage}</small><div class="hp"><span id="trainingPlayerHp"></span></div><em id="trainingPlayerText">${player.hp} / ${player.maxHp}</em></button>${[2,3,4].map(slot=>`<div class="battle-character-card is-locked"><strong>슬롯 ${slot}</strong><small>파티원 미참가</small></div>`).join('')}</section></div><div class="battle-version">${versionText()}</div></main>`,()=>{
-        const playerCard=document.querySelector('[data-training-player]');
-        const enemyCard=document.querySelector('[data-training-enemy]');
-        const line=document.getElementById('trainingBattleLine');
-        const label=document.getElementById('trainingTurnLabel');
-        const sync=()=>{
-          document.getElementById('trainingHaruHp').style.width=`${Math.max(0,haru.hp)/haru.maxHp*100}%`;
-          document.getElementById('trainingPlayerHp').style.width=`${Math.max(0,player.hp)/player.maxHp*100}%`;
-          document.getElementById('trainingHaruText').textContent=`${Math.max(0,haru.hp)} / ${haru.maxHp}`;
-          document.getElementById('trainingPlayerText').textContent=`${Math.max(0,player.hp)} / ${player.maxHp}`;
-          playerCard.classList.toggle('is-defeated',player.hp<=0);
-        };
-        const complete=()=>{
-          if(ended)return;ended=true;playerCard.disabled=true;enemyCard.disabled=true;label.textContent='TRAINING COMPLETE';
-          line.textContent='하루가 쓰러지는 주인공을 붙잡고 훈련을 종료했습니다.';
-          localStorage.setItem('mongyeong.speedUnlocked','1');
-          setTimeout(()=>{line.textContent+=' 화면을 터치하여 계속';app.firstElementChild.addEventListener('click',next,{once:true});},650);
-        };
-        const haruTurn=()=>{if(ended)return;playerTurn=false;playerCard.disabled=true;label.textContent='상대 턴 · 하루';setTimeout(()=>{player.hp-=haru.damage;line.textContent=`하루가 주인공의 빈틈을 짚었습니다. ${haru.damage}의 피해.`;sync();if(player.hp<=0){setTimeout(complete,500);return;}setTimeout(()=>{playerTurn=true;playerCard.disabled=false;playerCard.classList.remove('is-acted');playerCard.querySelector('.battle-card-order').textContent='';label.textContent='아군 턴 · 행동할 캐릭터 선택';line.textContent='주인공 카드를 터치하세요.';},600);},450);};
-        playerCard.onclick=()=>{if(!playerTurn||ended||playerCard.disabled)return;playerTurn=false;playerCard.disabled=true;playerCard.classList.add('is-acted');playerCard.querySelector('.battle-card-order').textContent='1번째 행동';haru.hp=Math.max(1,haru.hp-player.damage);line.textContent=`${player.name}이 맨손으로 하루를 공격했습니다. ${player.damage}의 피해.`;sync();setTimeout(haruTurn,450);};
-        sync();
+      const autoUnlocked=isAutoUnlocked();
+      mount(`<main class="screen battle-screen training-battle-screen"><div class="battle-controls"><button id="trainingSpeed" class="control-btn">×${speed}</button><button id="trainingAuto" class="control-btn ${autoUnlocked?'':'locked'}" ${autoUnlocked?'':'disabled'}>${autoUnlocked?(auto?'AUTO ON':'AUTO OFF'):'🔒 AUTO'}</button></div><div class="battle-layout battle-layout-v24"><section class="enemy-formation chapter3-enemies"><button class="battle-enemy-card is-targeted" data-training-enemy><strong>하루</strong><div class="hp enemy-hp"><span id="trainingHaruHp"></span></div><em id="trainingHaruText">${haru.hp} / ${haru.maxHp}</em></button>${[2,3,4,5].map(slot=>`<div class="battle-enemy-card is-empty"><span>적 ${slot}</span></div>`).join('')}</section><section class="battle-middle"><div class="turn-label" id="trainingTurnLabel">아군 턴 · 행동할 캐릭터 선택</div><div class="battle-line" id="trainingBattleLine">${auto?'자동 전투가 진행됩니다.':'주인공 카드를 터치하세요.'}</div></section><section class="battle-cards"><button class="battle-character-card" data-training-player><span class="battle-card-order"></span><strong>${player.name}</strong><small>맨손 공격 · 피해 ${player.damage}</small><div class="hp"><span id="trainingPlayerHp"></span></div><em id="trainingPlayerText">${player.hp} / ${player.maxHp}</em></button>${[2,3,4].map(slot=>`<div class="battle-character-card is-locked"><strong>슬롯 ${slot}</strong><small>파티원 미참가</small></div>`).join('')}</section></div><div class="battle-version">${versionText()}</div></main>`,()=>{
+        const playerCard=document.querySelector('[data-training-player]'),enemyCard=document.querySelector('[data-training-enemy]'),line=document.getElementById('trainingBattleLine'),label=document.getElementById('trainingTurnLabel'),speedBtn=document.getElementById('trainingSpeed'),autoBtn=document.getElementById('trainingAuto');
+        const sync=()=>{document.getElementById('trainingHaruHp').style.width=`${Math.max(0,haru.hp)/haru.maxHp*100}%`;document.getElementById('trainingPlayerHp').style.width=`${Math.max(0,player.hp)/player.maxHp*100}%`;document.getElementById('trainingHaruText').textContent=`${Math.max(0,haru.hp)} / ${haru.maxHp}`;document.getElementById('trainingPlayerText').textContent=`${Math.max(0,player.hp)} / ${player.maxHp}`;playerCard.classList.toggle('is-defeated',player.hp<=0);};
+        const queueAuto=()=>{clearTimeout(autoTimer);if(auto&&!ended&&playerTurn&&!playerCard.disabled)autoTimer=setTimeout(()=>playerCard.click(),Math.max(170,520/speed));};
+        const complete=()=>{if(ended)return;ended=true;clearTimeout(autoTimer);playerCard.disabled=true;enemyCard.disabled=true;label.textContent='TRAINING COMPLETE';line.textContent='하루가 쓰러지는 주인공을 붙잡고 훈련을 종료했습니다.';localStorage.setItem('mongyeong.speedUnlocked','1');setTimeout(()=>{line.textContent+=' 화면을 터치하여 계속';app.firstElementChild.addEventListener('click',next,{once:true});},650);};
+        const haruTurn=async()=>{if(ended)return;playerTurn=false;playerCard.disabled=true;label.textContent='상대 턴 · 하루';await wait(450,speed);player.hp-=haru.damage;line.textContent=`하루가 주인공의 빈틈을 짚었습니다. ${haru.damage}의 피해.`;sync();if(player.hp<=0){await wait(500,speed);complete();return;}await wait(600,speed);playerTurn=true;playerCard.disabled=false;playerCard.classList.remove('is-acted');playerCard.querySelector('.battle-card-order').textContent='';label.textContent='아군 턴 · 행동할 캐릭터 선택';line.textContent=auto?'자동 전투가 진행됩니다.':'주인공 카드를 터치하세요.';queueAuto();};
+        playerCard.onclick=async()=>{if(!playerTurn||ended||playerCard.disabled)return;playerTurn=false;clearTimeout(autoTimer);playerCard.disabled=true;playerCard.classList.add('is-acted');playerCard.querySelector('.battle-card-order').textContent='1번째 행동';haru.hp=Math.max(1,haru.hp-player.damage);line.textContent=`${player.name}이 맨손으로 하루를 공격했습니다. ${player.damage}의 피해.`;sync();await wait(450,speed);haruTurn();};
+        speedBtn.onclick=()=>{speed=speed===1?2:speed===2?3:1;localStorage.setItem(SPEED_KEY,String(speed));speedBtn.textContent=`×${speed}`;queueAuto();};
+        if(autoUnlocked)autoBtn.onclick=()=>{auto=!auto;localStorage.setItem(AUTO_KEY,auto?'1':'0');autoBtn.textContent=auto?'AUTO ON':'AUTO OFF';line.textContent=auto?'자동 전투가 진행됩니다.':'자동 전투가 해제되었습니다.';if(auto)queueAuto();else clearTimeout(autoTimer);};
+        sync();queueAuto();
       });
     }
   }
 
   function renderMomoTrainingBattle(){
-    const momo={name:'모모',hp:30,maxHp:30,damage:4};
-    const haru={name:'하루',hp:40,maxHp:40,damage:8};
-    let momoTurn=true,ended=false,speed=1;
+    const momo={name:'모모',hp:30,maxHp:30,damage:4},haru={name:'하루',hp:40,maxHp:40,damage:8};
+    let momoTurn=true,ended=false,speed=getSpeed(),auto=isAutoUnlocked()&&getAuto(),autoTimer=null;
     mount(`<main class="screen battle-intro"><div class="battle-start-flash">BATTLE START</div><div class="battle-start-sub">모모의 두려움 극복 훈련</div><div class="version">${versionText()}</div></main>`,()=>setTimeout(start,1050));
     function start(){
-      mount(`<main class="screen battle-screen training-battle-screen"><div class="battle-controls"><button id="momoSpeed" class="control-btn">×1</button><button class="control-btn locked" disabled>🔒 AUTO</button></div><div class="battle-layout battle-layout-v24"><section class="enemy-formation chapter3-enemies"><button class="battle-enemy-card is-targeted" data-momo-enemy><strong>하루</strong><div class="hp enemy-hp"><span id="momoHaruHp"></span></div><em id="momoHaruText">40 / 40</em></button>${[2,3,4,5].map(slot=>`<div class="battle-enemy-card is-empty"><span>적 ${slot}</span></div>`).join('')}</section><section class="battle-middle"><div class="turn-label" id="momoTurnLabel">아군 턴 · 행동할 캐릭터 선택</div><div class="battle-line" id="momoBattleLine">모모 카드를 터치하세요. 다크사이트는 봉인되어 있습니다.</div></section><section class="battle-cards"><button class="battle-character-card" data-momo-player><span class="battle-card-order"></span><strong>모모</strong><small>투척 단검 · 피해 4</small><div class="hp"><span id="momoPlayerHp"></span></div><em id="momoPlayerText">30 / 30</em></button>${[2,3,4].map(slot=>`<div class="battle-character-card is-locked"><strong>슬롯 ${slot}</strong><small>파티원 미참가</small></div>`).join('')}</section></div><div class="battle-version">${versionText()}</div></main>`,()=>{
-        const card=document.querySelector('[data-momo-player]'),enemy=document.querySelector('[data-momo-enemy]'),line=document.getElementById('momoBattleLine'),label=document.getElementById('momoTurnLabel'),speedBtn=document.getElementById('momoSpeed');
+      const autoUnlocked=isAutoUnlocked();
+      mount(`<main class="screen battle-screen training-battle-screen"><div class="battle-controls"><button id="momoSpeed" class="control-btn">×${speed}</button><button id="momoAuto" class="control-btn ${autoUnlocked?'':'locked'}" ${autoUnlocked?'':'disabled'}>${autoUnlocked?(auto?'AUTO ON':'AUTO OFF'):'🔒 AUTO'}</button></div><div class="battle-layout battle-layout-v24"><section class="enemy-formation chapter3-enemies"><button class="battle-enemy-card is-targeted" data-momo-enemy><strong>하루</strong><div class="hp enemy-hp"><span id="momoHaruHp"></span></div><em id="momoHaruText">40 / 40</em></button>${[2,3,4,5].map(slot=>`<div class="battle-enemy-card is-empty"><span>적 ${slot}</span></div>`).join('')}</section><section class="battle-middle"><div class="turn-label" id="momoTurnLabel">아군 턴 · 행동할 캐릭터 선택</div><div class="battle-line" id="momoBattleLine">${auto?'자동 전투가 진행됩니다.':'모모 카드를 터치하세요.'}</div></section><section class="battle-cards"><button class="battle-character-card" data-momo-player><span class="battle-card-order"></span><strong>모모</strong><small>투척 단검 · 피해 4</small><div class="hp"><span id="momoPlayerHp"></span></div><em id="momoPlayerText">30 / 30</em></button>${[2,3,4].map(slot=>`<div class="battle-character-card is-locked"><strong>슬롯 ${slot}</strong><small>파티원 미참가</small></div>`).join('')}</section></div><div class="battle-version">${versionText()}</div></main>`,()=>{
+        const card=document.querySelector('[data-momo-player]'),enemy=document.querySelector('[data-momo-enemy]'),line=document.getElementById('momoBattleLine'),label=document.getElementById('momoTurnLabel'),speedBtn=document.getElementById('momoSpeed'),autoBtn=document.getElementById('momoAuto');
         const sync=()=>{document.getElementById('momoHaruHp').style.width=`${Math.max(0,haru.hp)/haru.maxHp*100}%`;document.getElementById('momoPlayerHp').style.width=`${Math.max(0,momo.hp)/momo.maxHp*100}%`;document.getElementById('momoHaruText').textContent=`${Math.max(0,haru.hp)} / ${haru.maxHp}`;document.getElementById('momoPlayerText').textContent=`${Math.max(0,momo.hp)} / ${momo.maxHp}`;};
-        const complete=result=>{if(ended)return;ended=true;card.disabled=true;enemy.disabled=true;label.textContent='TRAINING COMPLETE';line.textContent=result==='win'?'모모가 끝까지 버티며 하루를 한 걸음 물러서게 했습니다.':'모모가 쓰러졌지만 끝까지 다크사이트를 사용하지 않았습니다.';setTimeout(()=>{line.textContent+=' 화면을 터치하여 계속';app.firstElementChild.addEventListener('click',next,{once:true});},650);};
-        const haruTurn=async()=>{if(ended)return;momoTurn=false;card.disabled=true;label.textContent='상대 턴 · 하루';await wait(450,speed);momo.hp-=haru.damage;line.textContent=`하루가 모모의 빈틈을 짚었습니다. ${haru.damage}의 피해.`;sync();if(momo.hp<=0){await wait(500,speed);complete('lose');return;}await wait(600,speed);momoTurn=true;card.disabled=false;card.classList.remove('is-acted');card.querySelector('.battle-card-order').textContent='';label.textContent='아군 턴 · 행동할 캐릭터 선택';line.textContent='모모 카드를 터치하세요. 다크사이트는 봉인되어 있습니다.';};
-        card.onclick=async()=>{if(!momoTurn||ended||card.disabled)return;momoTurn=false;card.disabled=true;card.classList.add('is-acted');card.querySelector('.battle-card-order').textContent='1번째 행동';haru.hp-=momo.damage;line.textContent='모모가 눈을 질끈 감고 단검을 던졌습니다. 4의 피해.';sync();if(haru.hp<=0){await wait(500,speed);complete('win');return;}await wait(450,speed);haruTurn();};
-        speedBtn.onclick=()=>{speed=speed===1?2:speed===2?3:1;speedBtn.textContent=`×${speed}`;};sync();
+        const queueAuto=()=>{clearTimeout(autoTimer);if(auto&&!ended&&momoTurn&&!card.disabled)autoTimer=setTimeout(()=>card.click(),Math.max(170,520/speed));};
+        const complete=result=>{if(ended)return;ended=true;clearTimeout(autoTimer);card.disabled=true;enemy.disabled=true;label.textContent='TRAINING COMPLETE';line.textContent=result==='win'?'모모가 끝까지 버티며 하루를 한 걸음 물러서게 했습니다.':'모모가 쓰러졌지만 끝까지 다크사이트를 사용하지 않았습니다.';setTimeout(()=>{line.textContent+=' 화면을 터치하여 계속';app.firstElementChild.addEventListener('click',next,{once:true});},650);};
+        const haruTurn=async()=>{if(ended)return;momoTurn=false;card.disabled=true;label.textContent='상대 턴 · 하루';await wait(450,speed);momo.hp-=haru.damage;line.textContent=`하루가 모모의 빈틈을 짚었습니다. ${haru.damage}의 피해.`;sync();if(momo.hp<=0){await wait(500,speed);complete('lose');return;}await wait(600,speed);momoTurn=true;card.disabled=false;card.classList.remove('is-acted');card.querySelector('.battle-card-order').textContent='';label.textContent='아군 턴 · 행동할 캐릭터 선택';line.textContent=auto?'자동 전투가 진행됩니다.':'모모 카드를 터치하세요.';queueAuto();};
+        card.onclick=async()=>{if(!momoTurn||ended||card.disabled)return;momoTurn=false;clearTimeout(autoTimer);card.disabled=true;card.classList.add('is-acted');card.querySelector('.battle-card-order').textContent='1번째 행동';haru.hp-=momo.damage;line.textContent='모모가 눈을 질끈 감고 단검을 던졌습니다. 4의 피해.';sync();if(haru.hp<=0){await wait(500,speed);complete('win');return;}await wait(450,speed);haruTurn();};
+        speedBtn.onclick=()=>{speed=speed===1?2:speed===2?3:1;localStorage.setItem(SPEED_KEY,String(speed));speedBtn.textContent=`×${speed}`;queueAuto();};
+        if(autoUnlocked)autoBtn.onclick=()=>{auto=!auto;localStorage.setItem(AUTO_KEY,auto?'1':'0');autoBtn.textContent=auto?'AUTO ON':'AUTO OFF';line.textContent=auto?'자동 전투가 진행됩니다.':'자동 전투가 해제되었습니다.';if(auto)queueAuto();else clearTimeout(autoTimer);};
+        sync();queueAuto();
       });
     }
   }
 
-  function renderWeaponUnlock(scene){
-    localStorage.setItem('mongyeong.weapon',scene.weapon||'불완전한 한손검');
-    mount(`<main class="screen status weapon-unlock-screen"><section class="box weapon-unlock-panel"><div class="reward-kicker">WEAPON MANIFESTED</div><div class="weapon-glyph">†</div><div class="chapter-title">${scene.weapon||'불완전한 한손검'}</div><div class="text" style="margin-top:18px">주인공 전용 무기가 처음으로 발현되었습니다.<br>아직 형태가 불안정합니다.</div></section><div class="hint">터치하여 계속</div><div class="version">${versionText()}</div></main>`,()=>{app.firstElementChild.onclick=next;});
-  }
-
+  function renderWeaponUnlock(scene){localStorage.setItem('mongyeong.weapon',scene.weapon||'불완전한 한손검');mount(`<main class="screen status weapon-unlock-screen"><section class="box weapon-unlock-panel"><div class="reward-kicker">WEAPON MANIFESTED</div><div class="weapon-glyph">†</div><div class="chapter-title">${scene.weapon||'불완전한 한손검'}</div><div class="text" style="margin-top:18px">주인공 전용 무기가 처음으로 발현되었습니다.<br>아직 형태가 불안정합니다.</div></section><div class="hint">터치하여 계속</div><div class="version">${versionText()}</div></main>`,()=>{app.firstElementChild.onclick=next;});}
   function renderSpeedUnlock(){mount(`<main class="screen status speed-unlock-screen"><section class="box"><div class="chapter-title">SPEED UNLOCK</div><div class="text" style="margin-top:18px">전투 배속 기능이 활성화되었습니다.<br>×1 · ×2 · ×3</div></section><div class="hint">터치하여 계속</div><div class="version">${versionText()}</div></main>`,()=>{app.firstElementChild.onclick=next;});}
-
   const originalRenderScene=renderScene;
   renderScene=function(scene){if(scene.type==='trainingBattle'){renderTrainingBattle();return;}if(scene.type==='trainingBattleMomo'){renderMomoTrainingBattle();return;}if(scene.type==='weaponUnlock'){renderWeaponUnlock(scene);return;}if(scene.type==='speedUnlock'){renderSpeedUnlock();return;}originalRenderScene(scene);};
 })();
