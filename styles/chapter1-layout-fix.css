@@ -3,7 +3,7 @@
 .chapter1-effect-battle .battle-controls .control-btn{min-width:72px!important;width:auto!important;min-height:34px!important;height:34px!important;padding:0 11px!important;border-radius:11px!important;font-size:.72rem!important}
 .chapter1-effect-battle .battle-layout{display:grid!important;grid-template-rows:auto minmax(120px,1fr) auto!important;gap:12px!important;min-height:calc(100dvh - 16px)!important;padding:48px 0 34px!important;box-sizing:border-box!important}
 .chapter1-effect-battle .battle-enemies{grid-row:1!important;align-self:start!important;margin:0!important}
-.chapter1-effect-battle .battle-middle{grid-row:2!important;align-self:center!important;justify-self:stretch!important;min-height:0!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;gap:8px!important}
+.chapter1-effect-battle .battle-middle{grid-row:2!important;align-self:center!important;justify-self:stretch!important;min-height:0!important;margin:0!important;padding:0!important;display:flex!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;gap:8px!important;transform:translateY(-5vh)!important}
 .chapter1-effect-battle .battle-allies{grid-row:3!important;align-self:end!important;margin:0!important}
 .chapter1-effect-battle .turn-label{margin:0 auto!important;min-height:38px!important;padding:7px 18px!important;display:flex!important;align-items:center!important;justify-content:center!important}
 .chapter1-effect-battle .battle-line{margin:0!important;min-height:26px!important;padding:4px 12px!important;display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important}
@@ -12,7 +12,7 @@
   .chapter1-effect-battle .battle-controls{right:10px!important;gap:5px!important}
   .chapter1-effect-battle .battle-controls .control-btn{min-width:68px!important;height:32px!important;min-height:32px!important;padding:0 9px!important;font-size:.68rem!important}
   .chapter1-effect-battle .battle-layout{grid-template-rows:auto minmax(110px,1fr) auto!important;gap:10px!important;padding-top:42px!important;padding-bottom:32px!important}
-  .chapter1-effect-battle .battle-middle{gap:6px!important}
+  .chapter1-effect-battle .battle-middle{gap:6px!important;transform:translateY(-4.5vh)!important}
   .chapter1-effect-battle .turn-label{min-height:34px!important;padding:6px 14px!important;font-size:.82rem!important}
   .chapter1-effect-battle .battle-line{font-size:.95rem!important;line-height:1.35!important}
 }
