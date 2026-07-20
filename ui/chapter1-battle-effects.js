@@ -14,8 +14,8 @@
 
     mount(`<main class="screen battle-screen chapter1-effect-battle">
       <div class="battle-controls">
-        <button class="control-btn locked">🔒 ×1</button>
-        <button class="control-btn locked">🔒 AUTO</button>
+        <button class="control-btn locked">×1 잠김</button>
+        <button class="control-btn locked">AUTO 잠김</button>
       </div>
       <div class="battle-layout">
         <section class="battle-top" id="chapter1Enemy">
@@ -145,8 +145,8 @@
           if(card==='strike'){
             damage=focused?18:10;
             focused=false;
-            line.textContent=`${state.playerName}의 공격. ${damage}의 피해.`;
-            attackOptions={attacker:playerElement,target:enemyElement,type:'slash',damage};
+            line.textContent=`${state.playerName}이 맨손으로 파고들었다. ${damage}의 피해.`;
+            attackOptions={attacker:playerElement,target:enemyElement,type:'impact',damage,heavy:focused};
           }else if(card==='guard'){
             guard=true;
             line.textContent='공격에 대비해 자세를 낮췄다.';
