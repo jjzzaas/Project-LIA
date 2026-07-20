@@ -7,8 +7,6 @@
     let player=42;
     let haru=48;
     let phase='player';
-    let focused=false;
-    let guard=false;
     let haruSpecialUsed=false;
     let actionLocked=false;
 
@@ -27,23 +25,15 @@
           <div class="battle-line" id="battleLine"></div>
         </section>
         <section class="allies">
-          <div class="ally-panel" id="chapter1Player">
+          <div class="ally-panel battle-unit-card" id="chapter1Player" role="button" tabindex="0" aria-label="${state.playerName} 일반 공격">
             <div class="unit-head"><span>${state.playerName}</span><span id="playerText">42 / 42</span></div>
             <div class="hp"><span id="playerHp"></span></div>
-            <div class="cards">
-              <button class="card-btn player-card" data-card="strike"><strong>공격</strong><small>피해 10</small></button>
-              <button class="card-btn player-card" data-card="guard"><strong>방어</strong><small>피해 감소</small></button>
-              <button class="card-btn player-card" data-card="wait"><strong>틈 보기</strong><small>다음 공격 강화</small></button>
-            </div>
+            <div class="unit-action-label">카드를 터치해 공격</div>
           </div>
-          <div class="ally-panel" id="chapter1Haru">
+          <div class="ally-panel battle-unit-card" id="chapter1Haru" role="button" tabindex="0" aria-label="하루 일반 공격">
             <div class="unit-head"><span>하루</span><span id="haruText">48 / 48</span></div>
             <div class="hp"><span id="haruHp"></span></div>
-            <div class="cards">
-              <button class="card-btn haru-card" data-card="arrow"><strong>빛의 화살</strong><small>피해 14</small></button>
-              <button class="card-btn haru-card" data-card="pierce"><strong>관통 사격</strong><small>피해 18</small></button>
-              <button class="card-btn haru-card" data-card="cover"><strong>엄호</strong><small>피해 감소</small></button>
-            </div>
+            <div class="unit-action-label">카드를 터치해 공격</div>
           </div>
         </section>
       </div>
@@ -51,10 +41,10 @@
     </main>`,()=>{
       const line=document.getElementById('battleLine');
       const label=document.getElementById('turnLabel');
-      const buttons=Array.from(document.querySelectorAll('.card-btn'));
       const enemyElement=document.getElementById('chapter1Enemy');
       const playerElement=document.getElementById('chapter1Player');
       const haruElement=document.getElementById('chapter1Haru');
+      const allyCards=[playerElement,haruElement];
 
       function sync(){
         document.getElementById('enemyHp').style.width=`${Math.max(0,enemy)/90*100}%`;
@@ -67,12 +57,18 @@
 
       function setPhase(nextPhase){
         phase=nextPhase;
-        buttons.forEach(button=>{
-          if(actionLocked){button.disabled=true;return;}
-          if(phase==='player')button.disabled=!button.classList.contains('player-card');
-          else if(phase==='haru')button.disabled=!button.classList.contains('haru-card');
-          else button.disabled=true;
-        });
+        allyCards.forEach(card=>card.classList.remove('active-turn','disabled-turn'));
+        if(actionLocked){
+          allyCards.forEach(card=>card.classList.add('disabled-turn'));
+        }else if(phase==='player'){
+          playerElement.classList.add('active-turn');
+          haruElement.classList.add('disabled-turn');
+        }else if(phase==='haru'){
+          haruElement.classList.add('active-turn');
+          playerElement.classList.add('disabled-turn');
+        }else{
+          allyCards.forEach(card=>card.classList.add('disabled-turn'));
+        }
         if(phase==='player')label.textContent=`아군 1 · ${state.playerName}`;
         else if(phase==='haru')label.textContent='아군 2 · 하루';
         else label.textContent='적 1 · 정체불명의 생명체';
@@ -80,7 +76,7 @@
 
       function victory(){
         actionLocked=true;
-        buttons.forEach(button=>button.disabled=true);
+        setPhase('enemy');
         label.textContent='VICTORY';
         line.textContent='화면을 터치하여 계속';
         app.firstElementChild.addEventListener('click',next,{once:true});
@@ -91,8 +87,7 @@
         setPhase('enemy');
         await effects.wait(300);
         const targetPlayer=Math.random()<0.5;
-        const damage=guard?4:8;
-        guard=false;
+        const damage=8;
         const targetElement=targetPlayer?playerElement:haruElement;
         await effects.playAttack({
           attacker:enemyElement,
@@ -112,7 +107,7 @@
         });
         await effects.wait(260);
         actionLocked=false;
-        line.textContent=`${state.playerName}의 차례입니다.`;
+        line.textContent=`${state.playerName}의 차례입니다. 카드를 터치하세요.`;
         setPhase('player');
       }
 
@@ -133,67 +128,60 @@
         return true;
       }
 
-      buttons.forEach(button=>{
-        button.onclick=async()=>{
-          if(actionLocked)return;
-          actionLocked=true;
-          buttons.forEach(item=>item.disabled=true);
-          const card=button.dataset.card;
-          let damage=0;
-          let attackOptions=null;
+      async function playerAttack(){
+        if(actionLocked||phase!=='player')return;
+        actionLocked=true;
+        setPhase('player');
+        const damage=10;
+        line.textContent=`${state.playerName}이 맨손으로 파고들었다. ${damage}의 피해.`;
+        await effects.playAttack({
+          attacker:playerElement,
+          target:enemyElement,
+          type:'impact',
+          damage,
+          onImpact:()=>{enemy-=damage;sync();}
+        });
+        if(enemy<=0){victory();return;}
+        await effects.wait(180);
+        actionLocked=false;
+        line.textContent='하루의 차례입니다. 카드를 터치하세요.';
+        setPhase('haru');
+      }
 
-          if(card==='strike'){
-            damage=focused?18:10;
-            focused=false;
-            line.textContent=`${state.playerName}이 맨손으로 파고들었다. ${damage}의 피해.`;
-            attackOptions={attacker:playerElement,target:enemyElement,type:'impact',damage,heavy:focused};
-          }else if(card==='guard'){
-            guard=true;
-            line.textContent='공격에 대비해 자세를 낮췄다.';
-          }else if(card==='wait'){
-            focused=true;
-            line.textContent='움직임을 읽으며 공격할 틈을 기다렸다.';
-          }else if(card==='arrow'){
-            damage=14;
-            line.textContent='하루의 빛의 화살이 검은 몸을 꿰뚫었다.';
-            attackOptions={attacker:haruElement,target:enemyElement,type:'pierce',projectileType:'arrow',damage};
-          }else if(card==='pierce'){
-            damage=18;
-            line.textContent='푸른 섬광이 적을 관통했다.';
-            attackOptions={attacker:haruElement,target:enemyElement,type:'pierce',projectileType:'arrow',damage,heavy:true};
-          }else if(card==='cover'){
-            guard=true;
-            line.textContent='하루가 빛으로 적의 움직임을 묶었다.';
-          }
+      async function haruAttack(){
+        if(actionLocked||phase!=='haru')return;
+        actionLocked=true;
+        setPhase('haru');
+        const damage=14;
+        line.textContent='하루의 빛의 화살이 검은 몸을 꿰뚫었다.';
+        await effects.playAttack({
+          attacker:haruElement,
+          target:enemyElement,
+          type:'pierce',
+          projectileType:'arrow',
+          damage,
+          onImpact:()=>{enemy-=damage;sync();}
+        });
+        if(enemy<=0){victory();return;}
+        await effects.wait(180);
+        if(await tryHaruSpecial()){
+          if(enemy<=0){await effects.wait(350);victory();return;}
+          await effects.wait(260);
+        }
+        enemyTurn();
+      }
 
-          if(attackOptions){
-            await effects.playAttack({...attackOptions,onImpact:()=>{enemy-=damage;sync();}});
-          }else{
-            await effects.wait(320);
-          }
+      function bindCard(card,handler){
+        card.addEventListener('click',handler);
+        card.addEventListener('keydown',event=>{
+          if(event.key==='Enter'||event.key===' '){event.preventDefault();handler();}
+        });
+      }
 
-          if(enemy<=0){victory();return;}
-
-          if(phase==='player'){
-            await effects.wait(180);
-            actionLocked=false;
-            line.textContent='하루의 차례입니다.';
-            setPhase('haru');
-            return;
-          }
-
-          await effects.wait(180);
-          if(await tryHaruSpecial()){
-            if(enemy<=0){await effects.wait(350);victory();}
-            else{await effects.wait(260);enemyTurn();}
-          }else{
-            enemyTurn();
-          }
-        };
-      });
-
+      bindCard(playerElement,playerAttack);
+      bindCard(haruElement,haruAttack);
       sync();
-      line.textContent=`${state.playerName}의 차례입니다.`;
+      line.textContent=`${state.playerName}의 차례입니다. 카드를 터치하세요.`;
       setPhase('player');
     });
   };
