@@ -10,14 +10,14 @@ const scenes = [
   { mode: 'black', speaker: '???', text: '거기 계세요?!' },
   { mode: 'black', speaker: '???', text: '괜찮으세요?' },
   { mode: 'forest', speaker: '주인공', text: '천천히 눈을 뜨자, 낯선 숲과 한 소녀의 모습이 시야에 들어왔다.' },
-  { mode: 'forest', character: true, speaker: '???', text: '다행이다…… 정신을 차리셨네요.' },
-  { mode: 'forest', character: true, speaker: '주인공', text: '……죄송한데, 혹시 여기가 어디인지 알 수 있을까요?' },
-  { mode: 'forest', character: true, speaker: '???', text: '……네?', choices: ['주변을 천천히 둘러본다.', '소녀에게 다시 묻는다.', '아무 말 없이 기억을 더듬는다.'] },
-  { mode: 'forest', character: true, speaker: '???', text: '잠시만요. 정말…… 아무것도 기억나지 않으세요?' },
-  { mode: 'forest', character: true, speaker: '주인공', text: '네. 제 이름조차도요.' },
-  { mode: 'forest', character: true, speaker: '하루', text: '저는 하루예요. 우선 여기서 벗어나요. 이 숲은 오래 머물 곳이 아니에요.' },
-  { mode: 'forest', character: true, speaker: '주인공', text: '하루 씨…… 알겠습니다.' },
-  { mode: 'forest', character: true, center: 'CHAPTER 1\n\n낯선 세계' }
+  { mode: 'forest', speaker: '???', text: '다행이다…… 정신을 차리셨네요.' },
+  { mode: 'forest', speaker: '주인공', text: '……죄송한데, 혹시 여기가 어디인지 알 수 있을까요?' },
+  { mode: 'forest', speaker: '???', text: '……네?', choices: ['주변을 천천히 둘러본다.', '소녀에게 다시 묻는다.', '아무 말 없이 기억을 더듬는다.'] },
+  { mode: 'forest', speaker: '???', text: '잠시만요. 정말…… 아무것도 기억나지 않으세요?' },
+  { mode: 'forest', speaker: '주인공', text: '네. 제 이름조차도요.' },
+  { mode: 'forest', speaker: '하루', text: '저는 하루예요. 우선 여기서 벗어나요. 이 숲은 오래 머물 곳이 아니에요.' },
+  { mode: 'forest', speaker: '주인공', text: '하루 씨…… 알겠습니다.' },
+  { mode: 'forest', center: 'CHAPTER 1\n\n낯선 세계' }
 ];
 
 let index = 0;
@@ -28,7 +28,6 @@ let selectedChoice = '';
 app.innerHTML = `
   <main class="vn-shell blackout" aria-label="夢境 비주얼 노벨">
     <div class="vn-bg" aria-hidden="true"></div>
-    <div class="vn-character" aria-hidden="true"></div>
 
     <header class="vn-topbar">
       <span class="vn-title-mark">夢境 : 잠든 세계</span>
@@ -58,7 +57,6 @@ app.innerHTML = `
 `;
 
 const shell = document.querySelector('.vn-shell');
-const character = document.querySelector('.vn-character');
 const dialogue = document.querySelector('#dialogue');
 const speaker = document.querySelector('#speaker');
 const text = document.querySelector('#text');
@@ -71,7 +69,6 @@ function renderScene() {
   if (!scene) return;
 
   shell.classList.toggle('blackout', scene.mode === 'black');
-  character.classList.toggle('visible', Boolean(scene.character));
 
   centerText.classList.toggle('vn-hidden', !scene.center);
   centerText.innerHTML = scene.center ? scene.center.replaceAll('\n', '<br>') : '';
@@ -130,7 +127,6 @@ function restartGame(event) {
   dialogue.classList.add('vn-hidden');
   centerText.classList.add('vn-hidden');
   shell.classList.add('blackout');
-  character.classList.remove('visible');
 }
 
 document.querySelector('#startButton').addEventListener('click', (event) => {
