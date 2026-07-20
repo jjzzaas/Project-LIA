@@ -1,7 +1,7 @@
 (()=>{
   const params=new URLSearchParams(location.search);
   const requested=Number(params.get('chapter')||1);
-  const selected=[1,2,3,4,5].includes(requested)?requested:1;
+  const selected=[1,2,3,4,5,6].includes(requested)?requested:1;
   window.SELECTED_CHAPTER=selected;
 
   // Keep every chapter array independent. Older loader code replaced CHAPTER_1
