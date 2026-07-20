@@ -71,7 +71,7 @@
         <h2>챕터 바로가기</h2>
         <p>선택한 챕터의 처음부터 재생합니다.<br>개발자 모드의 진행은 실제 저장 기록에 반영되지 않습니다.</p>
         <div class="developer-mode-grid">
-          ${[1,2,3,4,5].map(chapter=>`<button type="button" data-dev-chapter="${chapter}">챕터 ${chapter}</button>`).join('')}
+          ${[1,2,3,4,5,6].map(chapter=>`<button type="button" data-dev-chapter="${chapter}">챕터 ${chapter}</button>`).join('')}
         </div>
         <button type="button" class="developer-mode-close">닫기</button>
         ${isDev?'<button type="button" class="developer-mode-exit">개발자 모드 종료</button>':''}
@@ -104,7 +104,6 @@
     .developer-mode-panel p{margin:0 0 20px;font-size:14px;line-height:1.65;color:#afc5d6}
     .developer-mode-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
     .developer-mode-grid button,.developer-mode-close,.developer-mode-exit{min-height:48px;border:1px solid rgba(116,202,255,.34);border-radius:12px;background:rgba(45,114,160,.18);color:#f4fbff;font:inherit}
-    .developer-mode-grid button:last-child{grid-column:1/-1}
     .developer-mode-close,.developer-mode-exit{width:100%;margin-top:12px;background:rgba(255,255,255,.07)}
     .developer-mode-exit{border-color:rgba(255,152,152,.35);color:#ffd0d0}
     .developer-mode-badge{position:fixed;right:12px;top:max(12px,env(safe-area-inset-top));z-index:9998;padding:7px 10px;border:1px solid rgba(115,207,255,.45);border-radius:999px;background:rgba(2,12,25,.78);color:#8edaff;font-size:11px;letter-spacing:.12em}
@@ -120,7 +119,7 @@
     badge.onclick=openMenu;
     document.body.appendChild(badge);
     window.addEventListener('pagehide',restoreStorage);
-    if([1,2,3,4,5].includes(requestedChapter))launchChapter(requestedChapter);
+    if([1,2,3,4,5,6].includes(requestedChapter))launchChapter(requestedChapter);
   }
 
   document.addEventListener('click',event=>{
