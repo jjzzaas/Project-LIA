@@ -1,6 +1,12 @@
+const 표시이름 = {
+  주요인물4: '주요인물 4',
+  주요인물5: '주요인물 5',
+  주요인물6: '주요인물 6',
+};
+
 const formatValues = (values = {}) =>
   Object.entries(values)
-    .map(([name, value]) => `<li><span>${name}</span><strong>${value}</strong></li>`)
+    .map(([name, value]) => `<li><span>${표시이름[name] || name}</span><strong>${value}</strong></li>`)
     .join('') || '<li>기록 없음</li>';
 
 export const createDeveloperPanel = ({ onClose } = {}) => {
@@ -19,17 +25,17 @@ export const createDeveloperPanel = ({ onClose } = {}) => {
     </section>
 
     <section>
-      <h3>호감도</h3>
+      <h3>호감도 · 주요 인물 6명</h3>
       <ul data-developer-affection></ul>
     </section>
 
     <section>
-      <h3>신뢰도</h3>
+      <h3>신뢰도 · 주요 인물 6명</h3>
       <ul data-developer-trust></ul>
     </section>
 
     <section>
-      <h3>성향</h3>
+      <h3>플레이어 성향</h3>
       <ul data-developer-traits></ul>
     </section>
 
@@ -56,7 +62,7 @@ export const createDeveloperPanel = ({ onClose } = {}) => {
 
 export const updateDeveloperPanel = (panel, snapshot) => {
   panel.querySelector('[data-developer-location]').textContent =
-    `챕터 ${snapshot.currentChapter} / ${snapshot.currentScene}`;
+    `챕터 ${snapshot.currentChapter} / 장면 ${snapshot.currentScene}`;
 
   panel.querySelector('[data-developer-affection]').innerHTML = formatValues(snapshot.affection);
   panel.querySelector('[data-developer-trust]').innerHTML = formatValues(snapshot.trust);
