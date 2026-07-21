@@ -28,24 +28,29 @@ export const chapter003 = {
     ] },
     { id: 'c3-master-job', mode: 'city', speaker: '길드장', text: '마침 중앙도시 외곽의 방호 시설이 고장 났다. 위험한 일은 아니고, 귀찮고 손이 많이 가는 보수 작업이지.' },
     { id: 'c3-mc-accept', mode: 'city', speaker: '주인공', text: '맡겠습니다.' },
-    { id: 'c3-momo-request', mode: 'city', speaker: '모모', text: '길드장님, 저도 같이 가도 돼요?' },
-    { id: 'c3-master-question', mode: 'city', speaker: '길드장', text: '네가? 굳이?' },
-    { id: 'c3-momo-reason', mode: 'city', speaker: '모모', text: '혼자 보내면 길도 모르잖아요. 보수 작업이면 저도 도울 수 있고요.' },
-    { id: 'c3-choice-momo', mode: 'city', speaker: '주인공', text: '모모의 동행 제안에 어떻게 답할까.', choices: [
-      { id: 'c3-momo-welcome', label: '함께 가면 든든하다고 말한다.', reply: '같이 가주신다면 든든하겠습니다.', affection: { momo: 2 }, trust: { momo: 1 } },
-      { id: 'c3-momo-caution', label: '위험하지 않은지 확인한다.', reply: '괜찮으시겠습니까? 혹시 위험한 곳이라면 무리하지 않으셔도 됩니다.', affection: { momo: 1 }, traits: { considerate: 1 } },
-      { id: 'c3-momo-thanks', label: '길 안내를 부탁한다.', reply: '그럼 길을 부탁드리겠습니다. 아직 도시 밖은 전혀 모르니까요.', trust: { momo: 1 }, traits: { cautious: 1 } }
+    { id: 'c3-master-assign-momo', mode: 'city', speaker: '길드장', text: '모모. 네가 같이 가라.' },
+    { id: 'c3-momo-protest', mode: 'city', speaker: '모모', text: '네? 제가요? 외곽까지요?' },
+    { id: 'c3-master-reason', mode: 'city', speaker: '길드장', text: '저 녀석은 길도 모르고 이곳 사정도 모른다. 네가 안내해.' },
+    { id: 'c3-momo-hesitate', mode: 'city', speaker: '모모', text: '그래도 외곽은…….' },
+    { id: 'c3-master-reassure', mode: 'city', speaker: '길드장', text: '도시에서 멀지 않다. 악몽 출몰 보고도 없는 곳이야.' },
+    { id: 'c3-momo-accept', mode: 'city', speaker: '모모', text: '……꼭 제가 가야 해요?' },
+    { id: 'c3-master-final', mode: 'city', speaker: '길드장', text: '그래.' },
+    { id: 'c3-momo-resigned', mode: 'city', speaker: '모모', text: '……알겠어요.' },
+    { id: 'c3-choice-momo', mode: 'city', speaker: '주인공', text: '마지못해 동행하게 된 모모에게 어떻게 말할까.', choices: [
+      { id: 'c3-momo-welcome', label: '폐를 끼치지 않겠다고 말한다.', reply: '최대한 폐를 끼치지 않도록 하겠습니다.', trust: { momo: 1 }, traits: { considerate: 1 } },
+      { id: 'c3-momo-caution', label: '위험하면 바로 돌아가자고 말한다.', reply: '조금이라도 위험하다고 느껴지면 바로 돌아가겠습니다.', affection: { momo: 1 }, traits: { cautious: 1 } },
+      { id: 'c3-momo-thanks', label: '길 안내를 부탁한다.', reply: '그럼 길을 부탁드리겠습니다. 아직 도시 밖은 전혀 모르니까요.', trust: { momo: 1 } }
     ] },
-    { id: 'c3-momo-personality', mode: 'city', narration: true, text: '모모는 사람을 쉽게 따르고 먼저 말을 거는 성격이었다. 다만 허리에 찬 작은 단검과 달리, 전투 경험은 많아 보이지 않았다.' },
+    { id: 'c3-momo-personality', mode: 'city', narration: true, text: '모모는 선뜻 움직이지 못한 채 잠시 머뭇거렸다. 위험하지 않다는 말을 몇 번이나 되새긴 뒤에야 공구와 부품을 챙기기 시작했다.' },
     { id: 'c3-depart', mode: 'city-gate', narration: true, text: '필요한 공구와 부품을 챙긴 뒤 우리는 중앙도시 외곽으로 향했다.' },
-    { id: 'c3-road-talk', mode: 'forest-exit', speaker: '모모', text: '아침 일은…… 서로 모르는 걸로 해요. 알겠죠?' },
-    { id: 'c3-choice-road', mode: 'forest-exit', speaker: '주인공', text: '모모가 얼굴을 붉힌 채 앞만 보고 걷는다.', choices: [
-      { id: 'c3-road-agree', label: '조용히 동의한다.', reply: '네. 저도 그렇게 하겠습니다.', affection: { momo: 1 }, trust: { momo: 1 } },
-      { id: 'c3-road-apology', label: '다시 한번 사과한다.', reply: '놀라게 해서 죄송했습니다. 저도 그런 상황인 줄 몰랐습니다.', affection: { momo: 2 }, traits: { considerate: 1 } },
-      { id: 'c3-road-light', label: '가볍게 웃으며 넘긴다.', reply: '이미 둘 다 충분히 당황했으니 그걸로 끝내죠.', affection: { momo: 1 }, traits: { brave: 1 } }
+    { id: 'c3-road-talk', mode: 'forest-exit', speaker: '모모', text: '미리 말해 두는데요. 저는 길만 안내할 거예요. 이상한 게 나타나면 바로 돌아가는 거고요.' },
+    { id: 'c3-choice-road', mode: 'forest-exit', speaker: '주인공', text: '모모는 주변을 계속 살피며 조심스럽게 앞장섰다.', choices: [
+      { id: 'c3-road-agree', label: '조용히 동의한다.', reply: '네. 그렇게 하겠습니다.', trust: { momo: 1 } },
+      { id: 'c3-road-apology', label: '억지로 동행하게 해 미안하다고 한다.', reply: '원해서 오신 게 아닌데 죄송합니다. 최대한 빨리 끝내겠습니다.', affection: { momo: 2 }, traits: { considerate: 1 } },
+      { id: 'c3-road-light', label: '걱정하지 않아도 된다고 말한다.', reply: '보수 작업만 마치고 바로 돌아가죠.', affection: { momo: 1 }, traits: { cautious: 1 } }
     ] },
     { id: 'c3-outskirts-view', mode: 'forest-exit', narration: true, text: '성벽을 벗어나자 잘 정비된 거리 대신 거친 흙길과 낡은 방호 장치들이 이어졌다.' },
-    { id: 'c3-arrive', mode: 'city-gate', speaker: '모모', text: '저기예요. 저 장치를 고치면 되는 것 같아요.' },
+    { id: 'c3-arrive', mode: 'city-gate', speaker: '모모', text: '저기예요. 저 장치만 고치면 바로 돌아갈 수 있겠죠?' },
     { id: 'c3-clear', mode: 'black', center: 'CHAPTER 3 CLEAR' },
     { id: 'c3-end', mode: 'black', ending: true, center: '첫 임무는 전투가 아닌, 귀찮은 보수 작업이었다.' }
   ]
