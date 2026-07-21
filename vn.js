@@ -1,12 +1,19 @@
 import { chapter001 } from './src/chapters/001-010/chapter-001.js';
+import { chapter002 } from './src/chapters/001-010/chapter-002.js';
+import { chapter003 } from './src/chapters/001-010/chapter-003.js';
+import { chapter004 } from './src/chapters/001-010/chapter-004.js';
+import { chapter005 } from './src/chapters/001-010/chapter-005.js';
+import { chapter006 } from './src/chapters/001-010/chapter-006.js';
 import { createInitialGameState, recordChoice } from './src/config/game-state.js';
 import { createDeveloperTapDetector, getDeveloperSnapshot } from './src/config/developer-mode.js';
 import { createDeveloperPanel, openDeveloperPanel } from './src/ui/developer-panel.js';
 
 const app = document.querySelector('#app');
-const scenes = chapter001.scenes.map((scene) => ({ ...scene }));
-const SAVE_KEY = 'mongyeong-vn-chapter1';
+const chapters = [chapter001, chapter002, chapter003, chapter004, chapter005, chapter006];
+const SAVE_KEY = 'mongyeong-vn-save-v2';
 
+let chapterIndex = 0;
+let scenes = chapters[chapterIndex].scenes.map((scene) => ({ ...scene }));
 let index = 0;
 let started = false;
 let locked = false;
@@ -22,7 +29,7 @@ app.innerHTML = `
 
     <header class="vn-topbar">
       <span class="vn-title-mark">夢境 : 잠든 세계</span>
-      <button class="vn-version" id="versionButton" type="button" aria-label="버전 정보">VN 1.1</button>
+      <button class="vn-version" id="versionButton" type="button" aria-label="버전 정보">VN 1.2</button>
     </header>
 
     <div class="vn-controls">
@@ -66,6 +73,18 @@ const detectDeveloperTap = createDeveloperTapDetector({
   onUnlock: () => openDeveloperPanel(developerPanel, getDeveloperSnapshot(gameState)),
 });
 
+function getCurrentChapter() {
+  return chapters[chapterIndex];
+}
+
+function loadChapter(nextChapterIndex, nextSceneIndex = 0) {
+  chapterIndex = Math.max(0, Math.min(nextChapterIndex, chapters.length - 1));
+  scenes = getCurrentChapter().scenes.map((scene) => ({ ...scene }));
+  index = Math.max(0, Math.min(nextSceneIndex, scenes.length - 1));
+  locked = false;
+  stopTyping();
+}
+
 function applyMode(mode) {
   shell.dataset.mode = mode;
   shell.classList.toggle('blackout', mode === 'black');
@@ -95,6 +114,7 @@ function typeDialogue(value) {
 function saveProgress() {
   if (!started) return;
   localStorage.setItem(SAVE_KEY, JSON.stringify({
+    chapterIndex,
     index,
     gameState,
     savedAt: Date.now(),
@@ -106,7 +126,7 @@ function renderScene() {
   const scene = scenes[index];
   if (!scene) return;
 
-  gameState.currentChapter = chapter001.id;
+  gameState.currentChapter = getCurrentChapter().id;
   gameState.currentScene = scene.id;
 
   applyMode(scene.mode || 'black');
@@ -176,6 +196,13 @@ function advance() {
     if (scenes[index]?.temporary) scenes.splice(index, 1);
     else index += 1;
     renderScene();
+    return;
+  }
+
+  if (chapterIndex < chapters.length - 1) {
+    loadChapter(chapterIndex + 1, 0);
+    renderScene();
+    saveProgress();
   }
 }
 
@@ -185,10 +212,12 @@ function startGame(fromSave = false) {
 
   if (fromSave) {
     const saved = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
-    index = Number.isInteger(saved.index) ? Math.min(saved.index, scenes.length - 1) : 0;
+    const savedChapter = Number.isInteger(saved.chapterIndex) ? saved.chapterIndex : 0;
+    const savedScene = Number.isInteger(saved.index) ? saved.index : 0;
+    loadChapter(savedChapter, savedScene);
     gameState = saved.gameState || createInitialGameState();
   } else {
-    index = 0;
+    loadChapter(0, 0);
     gameState = createInitialGameState();
     localStorage.removeItem(SAVE_KEY);
   }
@@ -203,7 +232,7 @@ function restartGame(event) {
   localStorage.removeItem(SAVE_KEY);
   started = false;
   locked = false;
-  index = 0;
+  loadChapter(0, 0);
   gameState = createInitialGameState();
   developerPanel.hidden = true;
   startScreen.classList.remove('vn-hidden');
