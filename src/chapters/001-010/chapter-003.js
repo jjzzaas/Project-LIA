@@ -5,7 +5,7 @@ export const chapter003 = {
     { id: 'c3-title', mode: 'black', center: 'CHAPTER 3\n\n낯선 동행' },
     { id: 'c3-morning-light', mode: 'black', narration: true, text: '희미한 아침빛에 눈을 떴다. 낯선 천장이 먼저 보였고, 그제야 어젯밤 임시 숙소에 들어왔다는 사실이 떠올랐다.' },
     { id: 'c3-sound', mode: 'black', center: '새근……\n\n새근……' },
-    { id: 'c3-turn', mode: 'city', narration: true, text: '바로 옆 침상에서 인기척이 들렸다. 고개를 돌리자 처음 보는 소녀가 이불을 끌어안은 채 깊이 잠들어 있었다.' },
+    { id: 'c3-turn', mode: 'city', narration: true, text: '몸을 일으키려던 순간, 이불이 생각보다 묵직하게 느껴졌다. 무심코 이불을 살짝 들춰보니 처음 보는 소녀가 바로 옆에서 깊이 잠들어 있었다.' },
     { id: 'c3-confused', mode: 'city', speaker: '주인공', text: '누구지……? 어젯밤에 누가 들어온 건가?' },
     { id: 'c3-choice-first', mode: 'city', speaker: '주인공', text: '소녀를 깨우지 않도록 조용히 움직여야겠다.', choices: [
       {
@@ -14,7 +14,7 @@ export const chapter003 = {
         reply: '괜히 깨우지 말자. 일단 길드에 가서 상황부터 확인해야겠다.',
         traits: { cautious: 1, considerate: 1 },
         followUp: [
-          { id: 'c3-first-quiet-action', mode: 'city', narration: true, text: '소리가 나지 않도록 천천히 옷을 챙겨 입고 문고리를 잡았다.' },
+          { id: 'c3-first-quiet-action', mode: 'city', narration: true, text: '소녀가 깨지 않도록 조심스럽게 침대에서 빠져나와 천천히 옷을 챙겨 입고 문고리를 잡았다.' },
           { id: 'c3-first-quiet-look', mode: 'city', narration: true, text: '문을 닫기 전 다시 한번 돌아봤지만 소녀는 여전히 깊이 잠들어 있었다.' }
         ]
       },
@@ -24,8 +24,8 @@ export const chapter003 = {
         reply: '처음 보는 사람이다. 어젯밤에 들어온 것 같지만 지금 깨울 필요는 없겠지.',
         traits: { cautious: 1 },
         followUp: [
-          { id: 'c3-first-check-breath', mode: 'city', narration: true, text: '소녀는 이불을 끌어안은 채 고른 숨을 내쉬고 있었다. 당장 깨어날 기색은 없었다.' },
-          { id: 'c3-first-check-leave', mode: 'city', narration: true, text: '정체는 길드에서 확인하기로 하고 조용히 숙소를 나섰다.' }
+          { id: 'c3-first-check-breath', mode: 'city', narration: true, text: '소녀는 바로 옆에서 고른 숨을 내쉬고 있었다. 당장 깨어날 기색은 없었다.' },
+          { id: 'c3-first-check-leave', mode: 'city', narration: true, text: '정체는 길드에서 확인하기로 하고 조심스럽게 침대에서 빠져나와 숙소를 나섰다.' }
         ]
       },
       {
@@ -35,7 +35,7 @@ export const chapter003 = {
         traits: { cautious: 1 },
         followUp: [
           { id: 'c3-first-wait-think', mode: 'city', narration: true, text: '어제 숲에서 깨어났고, 하루 씨를 따라 도시에 들어왔다. 하지만 이 소녀에 관한 기억은 어디에도 없었다.' },
-          { id: 'c3-first-wait-rise', mode: 'city', narration: true, text: '생각을 마친 뒤 조용히 몸을 일으켰다. 소녀는 여전히 깊이 잠들어 있었다.' }
+          { id: 'c3-first-wait-rise', mode: 'city', narration: true, text: '생각을 마친 뒤 소녀가 깨지 않도록 조심스럽게 침대에서 빠져나왔다. 소녀는 여전히 깊이 잠들어 있었다.' }
         ]
       }
     ] },
