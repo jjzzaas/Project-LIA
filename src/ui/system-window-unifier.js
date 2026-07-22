@@ -54,7 +54,8 @@ function unifyCenterWindow() {
   if (!centerText || centerText.classList.contains('vn-hidden')) return;
   if (centerText.querySelector('.system-window')) return;
 
-  const plainText = centerText.textContent.trim();
+  // innerText를 사용해야 <br>로 나뉜 스테이터스 항목을 실제 줄바꿈으로 읽을 수 있다.
+  const plainText = centerText.innerText.trim();
   if (!plainText) return;
 
   const chapterTitle = plainText.match(/^CHAPTER\s+(\d+)\s+(.+)$/s);
