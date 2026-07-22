@@ -2,7 +2,7 @@ const centerText = document.querySelector('#centerText');
 const shell = document.querySelector('.vn-shell');
 const versionButton = document.querySelector('#versionButton');
 
-if (versionButton) versionButton.textContent = 'VN 1.4';
+if (versionButton) versionButton.textContent = 'VN 1.5';
 
 function escapeHtml(value = '') {
   return value
@@ -26,21 +26,42 @@ function systemWindow({ label, title, body = '', hint = '화면을 터치해 계
   `;
 }
 
+function statusRow(label, value, extraClass = '') {
+  return `
+    <div class="system-window__status-row ${extraClass}">
+      <span>${escapeHtml(label)}</span>
+      <strong>${escapeHtml(value)}</strong>
+    </div>
+  `;
+}
+
+function readValue(text, pattern, fallback = '없음') {
+  return text.match(pattern)?.[1]?.trim() || fallback;
+}
+
 function makeStatusWindow(text) {
-  const lines = text.split('\n').map((line) => line.trim()).filter(Boolean);
-  const rows = lines.slice(1).map((line) => {
-    const parts = line.split(/\s{2,}/).filter(Boolean);
-    if (parts.length > 1) {
-      return `<div class="system-window__status-row">${parts.map((part) => `<span>${escapeHtml(part)}</span>`).join('')}</div>`;
-    }
+  const normalized = text.replace(/\s+/g, ' ').trim();
+  const name = readValue(normalized, /이름\s+(.+?)\s+레벨/,'알 수 없음');
+  const level = readValue(normalized, /레벨\s+(\d+)/, '1');
+  const strength = readValue(normalized, /힘\s+(\d+)/, '1');
+  const agility = readValue(normalized, /민첩\s+(\d+)/, '1');
+  const stamina = readValue(normalized, /체력\s+(\d+)/, '1');
+  const spirit = readValue(normalized, /정신력\s+(\d+)/, '1');
+  const skillRaw = readValue(normalized, /스킬\s+(.+?)\s+구현 무기/, '없음');
+  const weaponRaw = readValue(normalized, /구현 무기\s+(.+)$/, '없음');
+  const skill = skillRaw === '없음' ? '미습득' : skillRaw;
+  const weapon = weaponRaw === '없음' ? '미구현' : weaponRaw;
 
-    const match = line.match(/^(이름|레벨|스킬|구현 무기)\s+(.+)$/);
-    if (match) {
-      return `<div class="system-window__status-row system-window__status-row--single"><span>${escapeHtml(match[1])}</span><strong>${escapeHtml(match[2])}</strong></div>`;
-    }
-
-    return `<div class="system-window__status-row system-window__status-row--single"><span>${escapeHtml(line)}</span></div>`;
-  }).join('');
+  const rows = [
+    statusRow('이름', name),
+    statusRow('레벨', `Lv.${level}`, 'system-window__status-row--level'),
+    statusRow('힘', strength),
+    statusRow('민첩', agility),
+    statusRow('체력', stamina),
+    statusRow('정신력', spirit),
+    statusRow('스킬', skill),
+    statusRow('구현 무기', weapon),
+  ].join('');
 
   return systemWindow({
     label: 'STATUS',
@@ -54,7 +75,6 @@ function unifyCenterWindow() {
   if (!centerText || centerText.classList.contains('vn-hidden')) return;
   if (centerText.querySelector('.system-window')) return;
 
-  // innerText를 사용해야 <br>로 나뉜 스테이터스 항목을 실제 줄바꿈으로 읽을 수 있다.
   const plainText = centerText.innerText.trim();
   if (!plainText) return;
 
