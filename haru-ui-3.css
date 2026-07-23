@@ -1,0 +1,25 @@
+.haru-visual-test {
+  left: 50%;
+  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 78px);
+  width: auto;
+  height: min(78svh, 980px);
+  max-width: 96vw;
+  object-fit: contain;
+  object-position: center bottom;
+  transform: translateX(-50%);
+  z-index: 1;
+  filter: drop-shadow(0 14px 30px rgba(0,0,0,.28));
+}
+
+.haru-visual-test.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 480px) {
+  .haru-visual-test {
+    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 72px);
+    height: min(76svh, 820px);
+    max-width: 98vw;
+  }
+}
