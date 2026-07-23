@@ -25,7 +25,6 @@
 .vn-dialogue,
 .vn-log,
 .vn-start {
-  position: relative;
   z-index: 2;
 }
 
