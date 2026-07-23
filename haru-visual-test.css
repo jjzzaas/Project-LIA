@@ -1,16 +1,16 @@
 .haru-visual-test {
   position: absolute;
   left: 50%;
-  bottom: clamp(210px, 25svh, 310px);
+  bottom: 58px;
   width: auto;
-  height: min(66svh, 900px);
-  max-width: 88vw;
+  height: min(79svh, 980px);
+  max-width: 104vw;
   object-fit: contain;
   object-position: center bottom;
   transform: translateX(-50%);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 180ms ease;
+  transition: opacity 220ms ease, transform 220ms ease;
   z-index: 1;
   pointer-events: none;
 }
@@ -33,8 +33,8 @@
 
 @media (max-width: 480px) {
   .haru-visual-test {
-    bottom: clamp(250px, 27svh, 340px);
-    height: min(62svh, 760px);
-    max-width: 92vw;
+    bottom: 52px;
+    height: min(77svh, 900px);
+    max-width: 108vw;
   }
 }
