@@ -1,14 +1,14 @@
 .haru-visual-test {
   left: 50%;
-  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 78px);
+  bottom: calc(max(8px, env(safe-area-inset-bottom)) + 46px);
   width: auto;
-  height: min(78svh, 980px);
-  max-width: 96vw;
+  height: min(84svh, 1040px);
+  max-width: 100vw;
   object-fit: contain;
   object-position: center bottom;
   transform: translateX(-50%);
   z-index: 1;
-  filter: drop-shadow(0 14px 30px rgba(0,0,0,.28));
+  filter: drop-shadow(0 15px 34px rgba(0,0,0,.30));
 }
 
 .haru-visual-test.is-visible {
@@ -18,8 +18,8 @@
 
 @media (max-width: 480px) {
   .haru-visual-test {
-    bottom: calc(max(8px, env(safe-area-inset-bottom)) + 72px);
-    height: min(76svh, 820px);
-    max-width: 98vw;
+    bottom: calc(max(7px, env(safe-area-inset-bottom)) + 42px);
+    height: min(82svh, 900px);
+    max-width: 104vw;
   }
 }
