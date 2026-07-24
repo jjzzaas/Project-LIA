@@ -14,7 +14,7 @@ export const chapter002 = {
       { id: 'c2-answer-forest', label: '숲에서 깨어났다고 설명한다.', reply: '몽환 숲에서 눈을 떴습니다. 그 이전은 전혀 기억나지 않습니다.', traits: { cautious: 1 } }
     ] },
     { id: 'c2-status-question', mode: 'city', speaker: '안내원', text: '본인 스테이터스 창은 열 수 있나요? 신원 확인에 필요한 항목만 길드 등록 장치에 공유해 주세요.' },
-    { id: 'c2-status-consent', mode: 'status', important: true, center: '정보 제공 요청\n\n길드 등록소에서 신원 확인에 필요한 정보를 요청했습니다.\n\n제공 항목\n이름 · 레벨 · 등록 상태\n\n상세 능력치와 스킬은 공개되지 않습니다.', choices: [
+    { id: 'c2-status-consent', mode: 'status', important: true, center: '<div class="system-window system-window--consent"><div class="system-window__scan" aria-hidden="true"></div><span class="system-window__label">ACCESS REQUEST</span><h2>정보 제공 요청</h2><p class="system-window__message">길드 등록소에서 신원 확인에 필요한 정보를 요청했습니다.</p><div class="system-window__permission"><span>제공 항목</span><strong>이름 · 레벨 · 등록 상태</strong></div><div class="system-window__line"></div><p class="system-window__notice">상세 능력치와 스킬은 공개되지 않습니다.</p></div>', choices: [
       { id: 'c2-consent-yes', label: '필요한 정보 제공에 동의한다.', reply: '동의하겠습니다.', flags: ['status_share_consented'] },
       { id: 'c2-consent-no', label: '어떤 정보가 공개되는지 다시 묻는다.', reply: '제 정보가 어디까지 보이는지 먼저 설명해 주시겠습니까?', traits: { cautious: 1 } }
     ] },
